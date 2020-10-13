@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
+import { Wrapper, Title, ButtonS, Topic, TopicList, Card } from "../styled-components/ListingPubs";
 
 function PublicationList(){
   const [error, setError] = useState(null);
@@ -27,25 +28,24 @@ function PublicationList(){
     return <div>Loading...</div>;
   } else {
     return (
-      <div id="pub-list">
+      <Wrapper id="pub-list">
         <h1>Publications</h1>
         
         {pubs.map(pub => (
           
-          <div key={pub._id}>
-            <hr></hr>
-            <h2>{pub.title}</h2> 
+          <Card key={pub._id}>
+            <Title>{pub.title}</Title> 
             <p>{pub.description}</p>
-            <h4>Upvotes: {pub.upvotes}</h4>
-            <ul id="topics-individual">
+            <h4>VOTES: {pub.upvotes}</h4>
+            <TopicList id="topics-individual">
               {pub.topics.map(topic => (
-                <li key={topic}>{topic}</li>
+                <Topic key={topic}>{topic}</Topic>
               ))}
-            </ul>
-            <Link to={pub._id}>Detail</Link>
-          </div>
+            </TopicList>
+            <ButtonS primary href={pub._id}>Detail</ButtonS>
+          </Card>
         ))}
-      </div>
+      </Wrapper>
     );
   }
 

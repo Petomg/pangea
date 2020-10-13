@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
 import { useParams, Redirect } from 'react-router-dom';
+import { Title, Wrapper, ButtonS, TopicList, Topics } from "../styled-components/ListingPubs";
 
 function PublicationDetail(){
     const [error, setError] = useState(null);
@@ -31,20 +32,21 @@ function PublicationDetail(){
         return <div>Loading...</div>;
     } else {
         return (
-            <div className="pub-detail">
-                <h1>{pubFields.title}</h1>
+            <Wrapper className="pub-detail">
+                <Title>{pubFields.title}</Title>
                 <i>Date: {pubFields.createdAt}</i>
                 <p>{pubFields.description}</p>
-                <h4>Upvotes: {pubFields.upvotes}</h4>
-                <button onClick={(e) => sendUpvote(e, pubFields.upvotes, pubFields._id)}>Upvote</button>
-                <button onClick={(e) => deletePost(e, pubFields._id)}>Delete</button>
+                <h4>VOTES: {pubFields.upvotes}</h4>
+                <ButtonS primary onClick={(e) => sendUpvote(e, pubFields.upvotes, pubFields._id)}>VOTE</ButtonS>
+                
                 <h3>Topics:</h3>
                 <ul id="topics-detail">
                     {pubFields.topics}
                 </ul>
+                <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
 
 
-            </div>
+            </Wrapper>
         );
     }
 
