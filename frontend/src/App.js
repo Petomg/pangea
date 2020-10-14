@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { NavBar, NavBarItem } from './styled-components/NavBar';
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,14 +18,14 @@ function App() {
        <Router>
       <div>
         <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/create">Create Publication</Link>
-            </li>
-          </ul>
+          <NavBar>
+            <NavBarItem>
+              <Link to="/" className="perso-link">Home</Link>
+            </NavBarItem>
+            <NavBarItem>
+              <Link to="/create" className="perso-link">Create Publication</Link>
+            </NavBarItem>
+          </NavBar>
         </nav>
 
         {/* A <Switch> looks through its children <Route>s and
