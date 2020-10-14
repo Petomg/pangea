@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
 import { useParams, Redirect } from 'react-router-dom';
-import { Title, Wrapper, ButtonS, TopicList, Topics } from "../styled-components/ListingPubs";
+import { Title, Wrapper, ButtonS, TopicList, Topic } from "../styled-components/ListingPubs";
+
+import Urn from "./Urn";
 
 function PublicationDetail(){
     const [error, setError] = useState(null);
@@ -45,7 +47,7 @@ function PublicationDetail(){
                 </ul>
                 <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
 
-
+                <Urn hola="asd"></Urn>
             </Wrapper>
         );
     }
@@ -56,9 +58,7 @@ function PublicationDetail(){
     axios({
       method: 'post',
       url: `http://localhost:5000/upvote_post/${id}`,
-      data: {
-        upvotes: currUps + 1
-      }
+
     });
 
     setPubFields({...pubFields, upvotes: currUps + 1});

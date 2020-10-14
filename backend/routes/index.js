@@ -22,9 +22,9 @@ router.get('/get_posts', function(req, res, next) {
 router.get('/get_posts/:pid', function(req,res,next){
     PostModel.findById(req.params.pid, function (err, post) {
       if (err){
-        return console.error(`No post found with id: ${id}`);
+        return console.error(`No post found with id: ${pid}`);
       } else {
-        res.send(post);
+        res.json(post);
       }
     });
 });
@@ -49,13 +49,11 @@ router.post('/add_post', function(req, res, next) {
 
 router.post('/upvote_post/:pid', function(req, res, next) {
 
-  let newUpvotes = req.body.upvotes;
-
   PostModel.findById(req.params.pid, function (err, post) {
     if (err){
-      return console.error(`No post found with id: ${id}`);
+      return console.error(`No post found with id: ${pid}`);
     } else {
-      post.upvotes = newUpvotes;
+      post.upvotes = post.upvotes + 1;
       post.save();
     }
   });
@@ -66,7 +64,7 @@ router.post('/delete_post/:pid', function(req, res, next) {
 
   PostModel.deleteOne({ _id: req.params.pid }, function (err) {
       if(err) {
-         return console.error(`No post found with id: ${id}`); 
+         return console.error(`No post found with id: ${pid}`); 
       } 
   });
 });

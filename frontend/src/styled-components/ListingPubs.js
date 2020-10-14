@@ -14,8 +14,7 @@ const Wrapper = styled.div`
 const ButtonS = styled.a`
     text-decoration:none;
     padding: 0.7em;
-    background-color: #4F89B0;
-    background-color: ${props => props.primary ? "#4F89B0d" : "#C9401A"};
+    background-color: ${props => props.primary ? "#4F89B0" : "#C9401A"};
     color: white;
     border-radius: 0.3em;
     margin: 1em;
