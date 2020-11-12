@@ -3,30 +3,34 @@ import axios from 'axios';
 import { ButtonV, Result } from "../styled-components/UrnStyles";
 
 function Urn(props){
-    const [posVotes, setPosVotes] = useState(7);
-    const [negVotes, setNegVotes] = useState(5);
+    const [posVotes, setPosVotes] = useState(0);
+    const [negVotes, setNegVotes] = useState(0);
     const [isClosed, setIsClosed] = useState(false);
     const [urnID, setUrnID] = useState("");
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
+
     useEffect(() => {
-        axios.get(`http://localhost:5000/voting/5f872ba4faa3dfb82e34e4b3`)
-        .then(
-            (result) => {
-              setIsLoaded(true);
-              setPosVotes(result.data.posVotes);
-              setNegVotes(result.data.negVotes);
-              setIsClosed(result.data.isClosed);
-              setUrnID(result.data._id);
-            },
-            (error) => {
-              setIsLoaded(true);
-              setError(error);
-            }
-        )
-    }, []);
+        if (props.urnid != undefined){
+            console.log(`http://localhost:5000/voting/${props.urnid}`);
+            axios.get(`http://localhost:5000/voting/${props.urnid}`)
+            .then(
+                (result) => {
+                setIsLoaded(true);
+                setPosVotes(result.data.posVotes);
+                setNegVotes(result.data.negVotes);
+                setIsClosed(result.data.isClosed);
+                setUrnID(result.data._id);
+                },
+                (error) => {
+                setIsLoaded(true);
+                setError(error);
+                }
+            )
+        }
+    }, [props.urnid]);
         
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -40,6 +44,7 @@ function Urn(props){
                 <p>Positive: {posVotes} | Negative: {negVotes}</p>
                 <ButtonV positive closed={isClosed} onClick={(e) => sendVote(e, urnID, 'positive')}>On Favor</ButtonV>
                 <ButtonV closed={isClosed} onClick={(e) => sendVote(e, urnID, 'negative')}>Against</ButtonV>
+                <h1>{props.urnid}</h1>
             </div>
         );
     }

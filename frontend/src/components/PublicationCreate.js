@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import {Entry, Input, Label, ButtonS, TextArea} from '../styled-components/CreatePub';
 
 
 const PublicationCreate = () => {
@@ -25,38 +26,48 @@ const PublicationCreate = () => {
         data: values
       }).then(
         //Redirect to home
+        //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
         window.location.href = "/"
       );
     }
 
   return (
+    <>
+    <h1>Add new Debate</h1>
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        name="title"
-        ref={register({
-          required: "Required",
-        })}
-      />
+      <Entry>
+        <Label>Title</Label>
+        <Input
+          name="title"
+          ref={register({
+            required: "Required",
+          })}
+        />
+      </Entry>
       {errors.title && errors.title.message}
 
-      <textarea
-        name="description"
-        ref={register}
-      ></textarea>
+      <Entry>    
+        <Label>Description</Label>
+        <TextArea
+          name="description"
+          ref={register}
+        ></TextArea>
+       </Entry>
       {errors.description && errors.description.message}
-      
-      <label>topic1</label>
+      <Entry>    
+      <Label>topic1</Label>
       <input type="checkbox" placeholder="topic1" name="topic1" ref={register} /> <br></br>
-      <label>topic2</label>
+      <Label>topic2</Label>
       <input type="checkbox" placeholder="topic2" name="topic2" ref={register} /> <br></br>
-      <label>topic3</label>
+      <Label>topic3</Label>
       <input type="checkbox" placeholder="topic3" name="topic3" ref={register} /> <br></br>
-      <label>topic4</label>
+      <Label>topic4</Label>
       <input type="checkbox" placeholder="topic4" name="topic4" ref={register} /> <br></br>
+      </Entry>    
     
-
-      <button type="submit">Submit</button>
+      <ButtonS type="submit">Submit</ButtonS>
     </form>
+    </>
   );
 };
 
