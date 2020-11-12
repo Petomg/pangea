@@ -31,7 +31,7 @@ router.post('/', function(req, res, next){
 router.get('/:vid', function(req, res, next) {
     UrnModel.findById(req.params.vid, function(err, urn){
         if (err) {
-            return console.error(`No Urn found with id: ${vid}`);
+            return console.error(`No Urn found with id: ${req.params.vid}`);
         } else {
             res.json(urn);
         }

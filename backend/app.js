@@ -9,6 +9,7 @@ let cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var votingRouter = require('./routes/voting');
+var topicRouter = require('./routes/topics');
 
 var app = express();
 app.use(cors({
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/voting', votingRouter);
+app.use('/topics', topicRouter);
 
 mongoose.connect('mongodb://localhost:27017/pange', {useNewUrlParser: true, useUnifiedTopology: true});
 
