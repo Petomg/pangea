@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let PostModel = require('../models/Post');
+let UrnModel = require('../models/Urn');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -37,7 +38,21 @@ router.post('/add_post', function(req, res, next) {
   let topics = req.body.topics;
   let upvotes = 0;
 
-  let newPost = new PostModel({title, description, topics, upvotes});
+  let posVotes = 0;
+  let negVotes = 0;
+  let isClosed = false;
+
+
+  let newUrn = new UrnModel({posVotes, negVotes, isClosed});
+
+  newUrn.save(function(err, urn){
+      if(err) {
+          return console.error("Error while creating urn");
+      } 
+  });
+
+  let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id});
+
   newPost.save(function(err, pub){
       if (err) {
         return console.error("Error while adding Post");

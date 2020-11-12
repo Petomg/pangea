@@ -1,4 +1,6 @@
 let mongoose = require("mongoose");
+let Urn = require('./Urn');
+let UrnSchema = mongoose.model('Urn').schema
 
 
 let PostSchema = mongoose.Schema({
@@ -20,11 +22,15 @@ let PostSchema = mongoose.Schema({
   upvotes: {
     type: Number,
     min: 0
-  }
+  },
 
   // TODO: Agregar Comentarios
   // Votacion
-
+  urn: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Urn'
+  }
+  
 },{
   timestamps: true
 })
