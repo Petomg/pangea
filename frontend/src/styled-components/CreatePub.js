@@ -18,6 +18,17 @@ let Input = styled.input`
     margin-top: 1em;
 `;
 
+let Topic = styled.label`
+    display: inline-block;
+    text-decoration:none;
+    padding: 0.5em;
+    color: white;
+    min-width: 6em;
+    background-color: #B3594E;
+    border: 1px solid gray;
+    border-radius: 4em;
+`;
+
 let TextArea = styled.textarea`
     padding-bottom: 8em;
     display: block;
@@ -51,5 +62,6 @@ export {
     Input,
     Label,
     ButtonS,
-    TextArea
+    TextArea,
+    Topic
 }

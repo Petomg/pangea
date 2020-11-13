@@ -32,6 +32,16 @@
   color: #61dafb;
 }
 
+.topic-check:checked ~ .topic-label {
+  font-weight: bold;
+  background-color: aquamarine;
+}
+
+#t_economy:checked ~ .topic-label {
+  font-weight: bold;
+  background-color: aquamarine;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import {Entry, Input, Label, ButtonS, TextArea} from '../styled-components/CreatePub';
+import {Entry, Input, Label, ButtonS, TextArea, Topic} from '../styled-components/CreatePub';
+
+import '../App.css';
 
 
 const PublicationCreate = () => {
@@ -11,18 +13,19 @@ const PublicationCreate = () => {
   const [topics, setTopics] = useState([]);
 
   const onSubmit = values => { 
-      console.log(values);
       // Reareglar valores para acomodar topics en array 
-      let topics = [];
+      let ctopics = [];
       for(let prop in values){
-        if(prop.substring(0,5).localeCompare("topic") == 0){
+        if((prop.localeCompare("title") != 0 && prop.localeCompare("description") != 0)) {
           if (values[prop]){
-            topics.push(prop);
+            ctopics.push(prop);
           }
           delete values[prop];
         }
-        values["topics"] = topics;
+        values["topics"] = ctopics;
       }
+
+      console.log(values);
 
       axios({
         method: 'post',
@@ -82,8 +85,8 @@ const PublicationCreate = () => {
 
             {topics.map(topic => (
                 <div key={topic._id}>
-                  <Label>{topic.name}</Label>
-                  <input type="checkbox" placeholder={topic.name} name={topic.name} ref={register} /> <br></br>
+                  <Topic for={"t_".concat(topic.name.toLowerCase())} className="topic-label">{topic.name} </Topic>
+                  <input id={"t_".concat(topic.name.toLowerCase())} className="topic-check" type="checkbox" placeholder={topic.name} name={topic.name} ref={register} /> <br></br>
                 </div>
             ))}
             

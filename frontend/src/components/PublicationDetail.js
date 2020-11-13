@@ -9,6 +9,7 @@ function PublicationDetail(){
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [pubFields, setPubFields] = useState({});
+    const [topics, setTopics] = useState([]);
   
 
     let {id} = useParams();
@@ -19,6 +20,7 @@ function PublicationDetail(){
             (result) => {
               setIsLoaded(true);
               setPubFields(result.data);
+              setTopics(result.data.topics);
               console.log(result.data);
             },
             (error) => {
@@ -41,10 +43,11 @@ function PublicationDetail(){
                 <h4>VOTES: {pubFields.upvotes}</h4>
                 <ButtonS primary onClick={(e) => sendUpvote(e, pubFields.upvotes, pubFields._id)}>VOTE</ButtonS>
                 
-                <h3>Topics:</h3>
-                <ul id="topics-detail">
-                    {pubFields.topics}
-                </ul>
+                <TopicList id="topics-detail">
+                {topics.map(topic => (
+                  <Topic key={topic}>{topic}</Topic>
+                ))}
+                </TopicList>
                 <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
 
                 <Urn urnid={pubFields.urn}></Urn>

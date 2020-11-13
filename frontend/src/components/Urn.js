@@ -44,7 +44,6 @@ function Urn(props){
                 <p>Positive: {posVotes} | Negative: {negVotes}</p>
                 <ButtonV positive closed={isClosed} onClick={(e) => sendVote(e, urnID, 'positive')}>On Favor</ButtonV>
                 <ButtonV closed={isClosed} onClick={(e) => sendVote(e, urnID, 'negative')}>Against</ButtonV>
-                <h1>{props.urnid}</h1>
             </div>
         );
     }
