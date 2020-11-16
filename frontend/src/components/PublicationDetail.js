@@ -38,6 +38,7 @@ function PublicationDetail(){
         return (
             <Wrapper className="pub-detail">
                 <Title>{pubFields.title}</Title>
+                
                 <i>Date: {pubFields.createdAt}</i>
                 <p>{pubFields.description}</p>
                 <h4>VOTES: {pubFields.upvotes}</h4>

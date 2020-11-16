@@ -6,10 +6,14 @@ var helmet = require('helmet');
 let mongoose = require('mongoose');
 let cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var votingRouter = require('./routes/voting');
-var topicRouter = require('./routes/topics');
+require('./config.js');
+
+let indexRouter = require('./routes/index');
+let votingRouter = require('./routes/voting');
+let topicRouter = require('./routes/topics');
+let loginRoute = require('./routes/login');
+let registerRoute = require('./routes/register');
+
 
 var app = express();
 app.use(cors({
@@ -23,11 +27,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/voting', votingRouter);
 app.use('/topics', topicRouter);
+app.use('/login', loginRoute);
+app.use('/register', registerRoute);
 
-mongoose.connect('mongodb://localhost:27017/pange', {useNewUrlParser: true, useUnifiedTopology: true});
+
+mongoose.connect('mongodb://localhost:27017/pange' , {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
