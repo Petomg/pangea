@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 const NavBar = styled.ul`
+    display: flex; 
+    justify-content: space-between;
     margin-top: 0;
-    display: block;
     background-color: #4F89B0;
     text-decoration:none;
     padding: 1.3em;
-    text-align: left;
 `;
 
 const NavBarItem = styled.li`

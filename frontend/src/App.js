@@ -11,6 +11,8 @@ import {
 import PublicationCreate from "./components/PublicationCreate";
 import PublicationList from "./components/PublicationsList";
 import PublicationDetail from "./components/PublicationDetail";
+import LoginForm from "./components/Login";
+import RegisterForm from "./components/Register";
 
 function App() {
   return (
@@ -19,18 +21,37 @@ function App() {
       <div>
         <nav>
           <NavBar>
+            <div>
             <NavBarItem>
               <Link to="/" className="perso-link">Home</Link>
             </NavBarItem>
             <NavBarItem>
               <Link to="/create" className="perso-link">Create Publication</Link>
             </NavBarItem>
+            </div>
+            <div>
+              <NavBarItem>
+                <Link to="/login" className="perso-link">Log in</Link>
+              </NavBarItem>
+              <NavBarItem>
+                <Link to="/register" className="perso-link">Sign up</Link>
+              </NavBarItem>
+            </div>
           </NavBar>
         </nav>
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
+
+          <Route path="/login">
+            <LoginForm />
+          </Route>
+
+          <Route path="/register">
+            <RegisterForm />
+          </Route>
+
           <Route path="/create">
             <PublicationCreate />
           </Route>
