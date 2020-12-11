@@ -1,6 +1,8 @@
 let mongoose = require("mongoose");
 let Urn = require('./Urn');
 let UrnSchema = mongoose.model('Urn').schema
+let Comment = require('./Comments');
+let CommentSchema = mongoose.model('Comments').schema
 
 
 let PostSchema = mongoose.Schema({
@@ -29,7 +31,12 @@ let PostSchema = mongoose.Schema({
   urn: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Urn'
-  }
+  },
+
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
+
+
+  
   
 },{
   timestamps: true

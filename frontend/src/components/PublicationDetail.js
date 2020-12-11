@@ -52,6 +52,8 @@ function PublicationDetail(){
                 <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
 
                 <Urn urnid={pubFields.urn}></Urn>
+
+
             </Wrapper>
         );
     }

@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let PostModel = require('../models/Post');
 let UrnModel = require('../models/Urn');
+let CommentsModel = require('../models/Comments');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -84,7 +85,20 @@ router.post('/delete_post/:pid', function(req, res, next) {
   });
 });
 
+router.post("/comments/:pid", function(req, res) {
+  // INSTANTIATE INSTANCE OF MODEL
+  const comment = new Comment(req.body);
 
-
+  // SAVE INSTANCE OF Comment MODEL TO DB
+  comment
+    .save()
+    .then(comment => {
+      // REDIRECT TO THE ROOT
+      return res.redirect(`/`);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 module.exports = router;
