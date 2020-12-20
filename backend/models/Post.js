@@ -33,7 +33,7 @@ let PostSchema = mongoose.Schema({
     ref: 'Urn'
   },
 
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 
 
   

@@ -4,6 +4,7 @@ const NavBar = styled.ul`
     display: flex; 
     justify-content: space-between;
     margin-top: 0;
+    margin-bottom: 0;
     background-color: #4F89B0;
     text-decoration:none;
     padding: 1.3em;

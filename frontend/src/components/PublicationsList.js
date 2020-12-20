@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import { Wrapper, Title, ButtonS, Topic, TopicList, Card } from "../styled-components/ListingPubs";
+import { Wrapper, Title, ButtonS, Topic, TopicList, Card, Banner, BannerBtn } from "../styled-components/ListingPubs";
 
 function PublicationList(){
   const [error, setError] = useState(null);
@@ -28,6 +28,10 @@ function PublicationList(){
     return <div>Loading...</div>;
   } else {
     return (
+      <>
+      <Banner>
+        <BannerBtn href='/create'>Tirate un debate Pa</BannerBtn>
+      </Banner> 
       <Wrapper id="pub-list">
         <h1>Publications</h1>
         
@@ -46,6 +50,7 @@ function PublicationList(){
           </Card>
         ))}
       </Wrapper>
+      </>
     );
   }
 

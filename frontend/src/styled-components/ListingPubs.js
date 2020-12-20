@@ -44,6 +44,31 @@ const Card = styled.div`
 
 `;
 
+const Banner = styled.div`
+
+    padding: 3em;
+    background-color: #D7F1FE;
+`;
+
+const BannerBtn = styled.a`
+    padding:1em;
+    margin: auto;
+    background-color: #4F89B0;
+    color: white;
+    font-weight: bold;
+    font-size: 2em;
+    text-decoration: none;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+    transition: 0.3s;
+    border-radius:0.1em;
+
+    &:hover {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.8);
+    }
+
+
+`;
+
 
 export {
     Title,
@@ -51,5 +76,7 @@ export {
     ButtonS,
     TopicList,
     Topic,
-    Card
+    Card,
+    Banner,
+    BannerBtn
 }
