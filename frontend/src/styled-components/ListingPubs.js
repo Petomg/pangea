@@ -69,6 +69,15 @@ const BannerBtn = styled.a`
 
 `;
 
+const CommentSection = styled.form`
+    margin-top: 3em;
+`;
+
+const CommentBox = styled.textarea`
+    border-radius: 0.5em;
+    width: 50%;
+    min-width: 200px;
+`;
 
 export {
     Title,
@@ -78,5 +87,7 @@ export {
     Topic,
     Card,
     Banner,
-    BannerBtn
+    BannerBtn,
+    CommentSection,
+    CommentBox
 }

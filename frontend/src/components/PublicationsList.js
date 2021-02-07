@@ -35,8 +35,8 @@ function PublicationList(){
       <Wrapper id="pub-list">
         <h1>Publications</h1>
         
-        {pubs.map(pub => (
-          
+        {pubs.map(pub => ( 
+
           <Card key={pub._id}>
             <Title>{pub.title}</Title> 
             <p>{pub.description}</p>

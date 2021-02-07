@@ -22,12 +22,11 @@ router.get('/get_posts', function(req, res, next) {
 
 
 router.get('/get_posts/:pid', function(req,res,next){
-    PostModel.findById(req.params.pid, function (err, post) {
-      if (err){
-        return console.error(`No post found with id: ${pid}`);
-      } else {
+    PostModel.findById(req.params.pid).lean().populate("comments").then( (post) => {
         res.json(post);
       }
+    ).catch((err) => {
+      return console.error(err);
     });
 });
 
@@ -87,14 +86,19 @@ router.post('/delete_post/:pid', function(req, res, next) {
 
 router.post("/comments/:pid", function(req, res) {
   // INSTANTIATE INSTANCE OF MODEL
-  const comment = new Comment(req.body);
+  let content = req.body.content;
+
+  const comment = new CommentsModel({content});
 
   // SAVE INSTANCE OF Comment MODEL TO DB
   comment
     .save()
     .then(comment => {
-      // REDIRECT TO THE ROOT
-      return res.redirect(`/`);
+      return PostModel.findById(req.params.pid);
+    })
+    .then(post => {
+      post.comments.unshift(comment);
+      return post.save();
     })
     .catch(err => {
       console.log(err);
