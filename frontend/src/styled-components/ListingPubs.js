@@ -9,6 +9,8 @@ const Title = styled.h1`
 // Create a Wrapper component that'll render a <section> tag with some styles
 const Wrapper = styled.div`
   padding: 4em;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ButtonS = styled.a`
@@ -71,12 +73,46 @@ const BannerBtn = styled.a`
 
 const CommentSection = styled.form`
     margin-top: 3em;
+    
 `;
 
-const CommentBox = styled.textarea`
-    border-radius: 0.5em;
+const CommentBox = styled.input`
     width: 50%;
     min-width: 200px;
+    padding: 0.5em;
+    border-color: #E6E6F2;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    margin: 1em;
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const CommentIndiv = styled.div`
+    margin: 1em auto;
+    width: 50%;
+    min-width: 200px;
+    align-items: center;
+    justify-content: center;
+    border-color: #E6E6F2;
+    border-bottom-style: solid;
+`;
+
+const CommentButton = styled.button`
+    padding: 0.5em;
+    font-size: 1em;
+    width: 6em;
+    border: hidden;
+    border-radius: 1em;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
 `;
 
 export {
@@ -89,5 +125,7 @@ export {
     Banner,
     BannerBtn,
     CommentSection,
-    CommentBox
+    CommentBox,
+    CommentIndiv,
+    CommentButton
 }

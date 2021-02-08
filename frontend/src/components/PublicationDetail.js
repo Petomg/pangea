@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios'
 import { useParams, Redirect } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { Title, Wrapper, ButtonS, TopicList, Topic, CommentSection, CommentBox } from "../styled-components/ListingPubs";
+import { Title, Wrapper, ButtonS, TopicList, Topic, CommentSection, CommentBox, CommentIndiv, CommentButton } from "../styled-components/ListingPubs";
+import * as general from "../operational/general_functionality";
 
 import Urn from "./Urn";
 
@@ -81,14 +82,14 @@ function PublicationDetail(){
                   {errors.content && errors.content.message}
                   
                   <div>
-                    <button type="submit">Save</button>
+                    <CommentButton type="submit">Save</CommentButton>
                   </div>
 
                   {comments.map(comment => (
-                    <div>
-                      <i>{comment.createdAt}</i>
-                      <p key={comment._id}>{comment.content}</p>
-                    </div>
+                      <CommentIndiv>
+                        <i className="date-comment">{general.formatDate(comment.createdAt)}</i>
+                        <p key={comment._id}>{comment.content}</p>
+                      </CommentIndiv>
                   ))}
 
                 </CommentSection>
