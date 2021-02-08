@@ -4,8 +4,12 @@ import axios from 'axios';
 import {Entry, Input, Label, ButtonS} from '../styled-components/CreatePub';
 import { Link } from "react-router-dom";
 
+import Cookies from 'universal-cookie';
+
+
 import env from "react-dotenv";
 
+const cookies = new Cookies();
 
 const LoginForm = () => {
     const { handleSubmit, register, errors } = useForm();
@@ -15,11 +19,13 @@ const LoginForm = () => {
             method: 'post',
             url: `${env.API_URL}/login`,
             data: values
-          }).then(
+          }).then( (dataBack) => {
+
+            cookies.set('nToken', dataBack.data.token, { path: '/' });
             //Redirect to home
             //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
-            window.location.href = "/"
-          );
+            window.location.href = "/";
+          });
     }
 
     return (

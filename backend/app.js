@@ -13,8 +13,9 @@ require('./config.js');
 let indexRouter = require('./routes/index');
 let votingRouter = require('./routes/voting');
 let topicRouter = require('./routes/topics');
-let loginRoute = require('./routes/login');
-let registerRoute = require('./routes/register');
+let loginRouter = require('./routes/login');
+let registerRouter = require('./routes/register');
+let logoutRouter = require('./routes/logout');
 
 
 var app = express();
@@ -31,8 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/voting', votingRouter);
 app.use('/topics', topicRouter);
-app.use('/login', loginRoute);
-app.use('/register', registerRoute);
+app.use('/login', loginRouter);
+app.use('/register', registerRouter);
+app.use('/logout', logoutRouter)
 
 
 mongoose.connect('mongodb://localhost:27017/pange' , {useNewUrlParser: true, useUnifiedTopology: true});

@@ -12,7 +12,11 @@ import PublicationCreate from "./components/PublicationCreate";
 import PublicationList from "./components/PublicationsList";
 import PublicationDetail from "./components/PublicationDetail";
 import LoginForm from "./components/Login";
+import LogoutForm from "./components/Logout";
 import RegisterForm from "./components/Register";
+
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 function App() {
   return (
@@ -30,9 +34,16 @@ function App() {
             </NavBarItem>
             </div>
             <div>
-              <NavBarItem>
-                <Link to="/login" className="perso-link">Log in</Link>
-              </NavBarItem>
+              {!cookies.get("nToken") &&
+                <NavBarItem>
+                  <Link to="/login" className="perso-link">Log in</Link>
+                </NavBarItem>
+              }
+              {cookies.get("nToken") &&
+                <NavBarItem>
+                  <Link to="/logout" className="perso-link">Logout</Link>
+                </NavBarItem>
+              }
               <NavBarItem>
                 <Link to="/register" className="perso-link">Sign up</Link>
               </NavBarItem>
@@ -46,6 +57,10 @@ function App() {
 
           <Route path="/login">
             <LoginForm />
+          </Route>
+
+          <Route path="/logout">
+            <LogoutForm />
           </Route>
 
           <Route path="/register">
