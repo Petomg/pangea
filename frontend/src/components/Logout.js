@@ -16,7 +16,7 @@ const LogoutForm = () => {
 
           }).then( () => {
             cookies.remove('nToken', { path: '/' });
-            
+            //Redirect to home
             //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
             window.location.href = "/";
         });
