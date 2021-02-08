@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import {Entry, Input, Label, ButtonS} from '../styled-components/CreatePub';
 
+import env from "react-dotenv";
 
 
 const RegisterForm = () => {
@@ -11,7 +12,7 @@ const RegisterForm = () => {
     const onSubmit = values => {
         axios({
             method: 'post',
-            url: 'http://localhost:5000/register',
+            url: `${env.API_URL}/register`,
             data: values
           }).then(
             //Redirect to home

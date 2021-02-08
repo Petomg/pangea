@@ -5,6 +5,8 @@ import {Entry, Input, Label, ButtonS, TextArea, Topic} from '../styled-component
 
 import '../App.css';
 
+import env from "react-dotenv";
+
 
 const PublicationCreate = () => {
   const { handleSubmit, register, errors } = useForm();
@@ -29,7 +31,7 @@ const PublicationCreate = () => {
 
       axios({
         method: 'post',
-        url: 'http://localhost:5000/add_post',
+        url: `${env.API_URL}/add_post`,
         data: values
       }).then(
         //Redirect to home
@@ -40,9 +42,10 @@ const PublicationCreate = () => {
 
   
     useEffect(() => {
-      axios.get("http://localhost:5000/topics")
+      axios.get(`${env.API_URL}/topics`)
         .then(
           (result) => {
+
             setIsLoaded(true);
             setTopics(result.data);
           },

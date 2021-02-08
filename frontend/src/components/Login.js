@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Entry, Input, Label, ButtonS} from '../styled-components/CreatePub';
 import { Link } from "react-router-dom";
 
+import env from "react-dotenv";
 
 
 const LoginForm = () => {
@@ -12,7 +13,7 @@ const LoginForm = () => {
     const onSubmit = values => {
         axios({
             method: 'post',
-            url: 'http://localhost:5000/login',
+            url: `${env.API_URL}/login`,
             data: values
           }).then(
             //Redirect to home

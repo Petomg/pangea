@@ -6,6 +6,8 @@ var helmet = require('helmet');
 let mongoose = require('mongoose');
 let cors = require('cors');
 
+require('dotenv').config();
+
 require('./config.js');
 
 let indexRouter = require('./routes/index');

@@ -10,7 +10,7 @@ router.post('/', function(req, res, next){
 
     User.findOne({ email: body.email }, function(err, user){
         // Hay error? Le mando un 500 (Internal server error)
-
+    
         if(err){
             return res.status(500).json({
                 ok: false,
@@ -44,8 +44,8 @@ router.post('/', function(req, res, next){
 
         let token = jwt.sign({
                 user: user,
-            },  'este-es-el-seed-desarrollo' ,{ //TODO: LOGRAR USAR process.env.SEED_AUTENTICATION
-                expiresIn: '48h' //TODO: LOGRAR USAR process.env.CADUCIDAD_TOKEN
+            },  process.env.SEED_AUTENTICACION ,{ //TODO: LOGRAR USAR process.env.SEED_AUTENTICATION
+                expiresIn: process.env.CADUCIDAD_TOKEN //TODO: LOGRAR USAR process.env.CADUCIDAD_TOKEN
         })
 
         res.json({

@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { Title, Wrapper, ButtonS, TopicList, Topic, CommentSection, CommentBox, CommentIndiv, CommentButton } from "../styled-components/ListingPubs";
 import * as general from "../operational/general_functionality";
 
+import env from "react-dotenv";
+
 import Urn from "./Urn";
 
 function PublicationDetail(){
@@ -21,7 +23,7 @@ function PublicationDetail(){
     const addComment = values => {
         axios({
           method: 'post',
-          url: `http://localhost:5000/comments/${id}`,
+          url: `${env.API_URL}/comments/${id}`,
           data: values
         }).then(
           //Redirect to home
@@ -31,7 +33,7 @@ function PublicationDetail(){
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/get_posts/${id}`)
+        axios.get(`${env.API_URL}/get_posts/${id}`)
         .then(
             (result) => {
               setIsLoaded(true);
@@ -56,7 +58,7 @@ function PublicationDetail(){
             <Wrapper className="pub-detail">
                 <Title>{pubFields.title}</Title>
                 
-                <i>Date: {pubFields.createdAt}</i>
+                <b>{general.formatDate(pubFields.createdAt)}</b>
                 <p>{pubFields.description}</p>
                 <h4>VOTES: {pubFields.upvotes}</h4>
                 <ButtonS primary onClick={(e) => sendUpvote(e, pubFields.upvotes, pubFields._id)}>VOTE</ButtonS>
@@ -102,7 +104,7 @@ function PublicationDetail(){
   function sendUpvote(event, currUps, id){
     axios({
       method: 'post',
-      url: `http://localhost:5000/upvote_post/${id}`,
+      url: `${env.API_URL}/upvote_post/${id}`,
 
     });
 
@@ -113,7 +115,7 @@ function PublicationDetail(){
   function deletePost(event, id){
     axios({
       method: 'post',
-      url: `http://localhost:5000/delete_post/${id}`,
+      url: `${env.API_URL}/delete_post/${id}`,
     }).then(
         //Redirect to home
         window.location.href = "/"

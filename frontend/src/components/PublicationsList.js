@@ -3,13 +3,15 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { Wrapper, Title, ButtonS, Topic, TopicList, Card, Banner, BannerBtn } from "../styled-components/ListingPubs";
 
+import env from "react-dotenv";
+
 function PublicationList(){
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [pubs, setPubs] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/get_posts")
+    axios.get(`${env.API_URL}/get_posts`)
       .then(
         (result) => {
           setIsLoaded(true);

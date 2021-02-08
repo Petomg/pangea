@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { ButtonV, Result } from "../styled-components/UrnStyles";
 
+import env from "react-dotenv";
+
 function Urn(props){
     const [posVotes, setPosVotes] = useState(0);
     const [negVotes, setNegVotes] = useState(0);
@@ -14,8 +16,8 @@ function Urn(props){
 
     useEffect(() => {
         if (props.urnid != undefined){
-            console.log(`http://localhost:5000/voting/${props.urnid}`);
-            axios.get(`http://localhost:5000/voting/${props.urnid}`)
+         
+            axios.get(`${env.API_URL}/voting/${props.urnid}`)
             .then(
                 (result) => {
                 setIsLoaded(true);
@@ -59,7 +61,7 @@ function Urn(props){
     function sendVote(event, id, type){
         axios({
           method: 'post',
-          url: `http://localhost:5000/voting/${type}/${id}`,
+          url: `${env.API_URL}/voting/${type}/${id}`,
     
         });
         if(type.localeCompare('positive') === 0){
