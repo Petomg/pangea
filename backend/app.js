@@ -5,6 +5,7 @@ var logger = require('morgan');
 var helmet = require('helmet');
 let mongoose = require('mongoose');
 let cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
@@ -29,12 +30,34 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var checkAuth = (req, res, next) => {
+  console.log("Checking authentication");
+  
+  console.log(req.cookies);
+  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+    req.user = null;
+    console.log("*********NO LOGUEADO***********");
+  } else {
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+    console.log("*********LOGUEADO***********");
+  }
+
+  next();
+};
+
+app.use(checkAuth);
+
 app.use('/', indexRouter);
 app.use('/voting', votingRouter);
 app.use('/topics', topicRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/logout', logoutRouter)
+
+
+
 
 
 mongoose.connect('mongodb://localhost:27017/pange' , {useNewUrlParser: true, useUnifiedTopology: true});

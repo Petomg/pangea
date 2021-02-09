@@ -7,6 +7,10 @@ import '../App.css';
 
 import env from "react-dotenv";
 
+import * as general from "../operational/general_functionality";
+
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const PublicationCreate = () => {
   const { handleSubmit, register, errors } = useForm();
@@ -32,7 +36,8 @@ const PublicationCreate = () => {
       axios({
         method: 'post',
         url: `${env.API_URL}/add_post`,
-        data: values
+        data: {author: cookies.get("nToken"),
+              values}
       }).then(
         //Redirect to home
         //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
@@ -94,8 +99,12 @@ const PublicationCreate = () => {
             ))}
             
             </Entry>    
-          
-            <ButtonS type="submit">Submit</ButtonS>
+            {general.isLoggedIn() &&
+              <ButtonS type="submit">Submit</ButtonS>
+            }
+            {!general.isLoggedIn() &&
+              <h3>Need to be logged in to create new Post!</h3>
+            }
           </form>
           </>
         );

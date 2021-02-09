@@ -3,6 +3,7 @@ let router = express.Router();
 let PostModel = require('../models/Post');
 let UrnModel = require('../models/Urn');
 let CommentsModel = require('../models/Comments');
+const jwt = require('jsonwebtoken');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,10 +34,14 @@ router.get('/get_posts/:pid', function(req,res,next){
 
 router.post('/add_post', function(req, res, next) {
 
-  let title = req.body.title;
-  let description = req.body.description;
-  let topics = req.body.topics;
+  let title = req.body.values.title;
+  let description = req.body.values.description;
+  let topics = req.body.values.topics;
   let upvotes = 0;
+  let token = req.body.author;
+
+  let decodedToken = jwt.decode(token, { complete: true }) || {};
+  let author_id = decodedToken.payload.user._id;
 
   let posVotes = 0;
   let negVotes = 0;
@@ -51,7 +56,7 @@ router.post('/add_post', function(req, res, next) {
       } 
   });
 
-  let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id});
+  let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id, author: author_id});
 
   newPost.save(function(err, pub){
       if (err) {

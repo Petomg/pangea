@@ -33,10 +33,9 @@ let PostSchema = mongoose.Schema({
     ref: 'Urn'
   },
 
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }]
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }],
 
-
-  
+  author : { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
   
 },{
   timestamps: true

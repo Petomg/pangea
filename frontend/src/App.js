@@ -15,10 +15,13 @@ import LoginForm from "./components/Login";
 import LogoutForm from "./components/Logout";
 import RegisterForm from "./components/Register";
 
+import * as general from "./operational/general_functionality";
+
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 function App() {
+
   return (
     <div className="App">
        <Router>
@@ -34,12 +37,12 @@ function App() {
             </NavBarItem>
             </div>
             <div>
-              {!cookies.get("nToken") &&
+              {!general.isLoggedIn() &&
                 <NavBarItem>
                   <Link to="/login" className="perso-link">Log in</Link>
                 </NavBarItem>
               }
-              {cookies.get("nToken") &&
+              {general.isLoggedIn() &&
                 <NavBarItem>
                   <Link to="/logout" className="perso-link">Logout</Link>
                 </NavBarItem>

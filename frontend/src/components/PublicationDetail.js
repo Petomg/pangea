@@ -68,8 +68,10 @@ function PublicationDetail(){
                   <Topic key={topic}>{topic}</Topic>
                 ))}
                 </TopicList>
-                <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
-                
+
+                {general.checkUserValid(pubFields.author) &&
+                  <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
+                }
                 <Urn urnid={pubFields.urn}></Urn>
 
 

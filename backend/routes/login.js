@@ -48,14 +48,18 @@ router.post('/', function(req, res, next){
                 expiresIn: process.env.CADUCIDAD_TOKEN //TODO: LOGRAR USAR process.env.CADUCIDAD_TOKEN
         })
 
-      
-        res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
+        res.cookie('nToken',token, {maxAge:900000,httpOnly:true});
+        
+
         
         res.json({
             ok: true,
             user: user,
             token
         })
+
+        
+        
     })
 });
 

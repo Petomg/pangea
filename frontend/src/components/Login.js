@@ -18,7 +18,10 @@ const LoginForm = () => {
         axios({
             method: 'post',
             url: `${env.API_URL}/login`,
-            data: values
+            data: values,
+          },{
+            withCredentials: true,
+            credentials: 'include'
           }).then( (dataBack) => {
 
             cookies.set('nToken', dataBack.data.token, { path: '/' });
