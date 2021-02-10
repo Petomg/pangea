@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { NavBar, NavBarItem } from './styled-components/NavBar';
+import { NavBar, NavBarItem, MainTitle } from './styled-components/NavBar';
 import {
   BrowserRouter as Router,
   Switch,
@@ -27,8 +27,10 @@ function App() {
        <Router>
       <div>
         <nav>
+       
           <NavBar>
             <div>
+            <MainTitle>PANGEA</MainTitle>
             <NavBarItem>
               <Link to="/" className="perso-link">Home</Link>
             </NavBarItem>
@@ -36,6 +38,7 @@ function App() {
               <Link to="/create" className="perso-link">Create Publication</Link>
             </NavBarItem>
             </div>
+            
             <div>
               {!general.isLoggedIn() &&
                 <NavBarItem>

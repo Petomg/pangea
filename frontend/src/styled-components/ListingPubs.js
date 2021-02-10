@@ -17,10 +17,17 @@ const ButtonS = styled.a`
     text-decoration:none;
     padding: 0.7em;
     background-color: ${props => props.primary ? "#4F89B0" : "#C9401A"};
-    color: white;
-    border-radius: 0.3em;
+    color:#F7ECDF;
+    border-radius: 1.2em;
     margin: 1em;
     cursor: pointer;
+    font-weight: bold;
+
+    &:hover {
+        color:black;
+        background-color:#F7ECDF;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+    }
 `;
 
 const TopicList = styled.ul`
@@ -32,9 +39,11 @@ const Topic = styled.li`
     display: inline-block;
     text-decoration:none;
     padding: 0.5em;
-    color: white;
-    background-color: #B3594E;
+    color: black;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
     border-radius: 4em;
+    font-weight: bold;
 
 `;
 
@@ -65,7 +74,9 @@ const BannerBtn = styled.a`
     border-radius:0.1em;
 
     &:hover {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.8);
+        color:black;
+        background-color:#F7ECDF;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
     }
 
 
@@ -108,7 +119,16 @@ const CommentButton = styled.button`
     width: 6em;
     border: hidden;
     border-radius: 1em;
+    background-color: #F7ECDF;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    font-weight: bold;
     cursor: pointer;
+
+    &:hover {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.8);
+        background-color:#EBE0D3;
+    }
+
 
     &:focus {
         outline: none;
