@@ -51,6 +51,11 @@ textarea {
   font-size: 0.9em;
 }
 
+.topic-select {
+  display: inline-block;
+  margin-right: 1em;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

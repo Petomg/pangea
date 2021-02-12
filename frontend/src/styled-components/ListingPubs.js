@@ -40,8 +40,8 @@ const Topic = styled.li`
     text-decoration:none;
     padding: 0.5em;
     color: black;
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
+    background-color:#F7ECDF;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 4em;
     font-weight: bold;
 
@@ -70,7 +70,7 @@ const BannerBtn = styled.a`
     font-size: 2em;
     text-decoration: none;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
-    transition: 0.3s;
+    transition: 1s;
     border-radius:0.1em;
 
     &:hover {

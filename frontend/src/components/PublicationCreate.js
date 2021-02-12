@@ -92,7 +92,7 @@ const PublicationCreate = () => {
             <Entry>    
 
             {topics.map(topic => (
-                <div key={topic._id}>
+                <div key={topic._id} class="topic-select">
                   <Topic for={"t_".concat(topic.name.toLowerCase())} className="topic-label">{topic.name} </Topic>
                   <input id={"t_".concat(topic.name.toLowerCase())} className="topic-check" type="checkbox" placeholder={topic.name} name={topic.name} ref={register} /> <br></br>
                 </div>

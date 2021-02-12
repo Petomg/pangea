@@ -22,12 +22,16 @@ let Topic = styled.label`
     display: inline-block;
     text-decoration:none;
     padding: 0.5em;
-    color: white;
-    min-width: 6em;
-    background-color: #B3594E;
-    border: 1px solid gray;
+    color: black;
+    background-color:#F7ECDF;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 4em;
+    font-weight: bold;
+    width: 5em;
+
+
 `;
+
 
 let TextArea = styled.textarea`
     padding-bottom: 8em;

@@ -14,6 +14,7 @@ import PublicationDetail from "./components/PublicationDetail";
 import LoginForm from "./components/Login";
 import LogoutForm from "./components/Logout";
 import RegisterForm from "./components/Register";
+import TopicForm from "./components/TopicAdd";
 
 import * as general from "./operational/general_functionality";
 
@@ -30,13 +31,16 @@ function App() {
        
           <NavBar>
             <div>
-            <MainTitle>PANGEA</MainTitle>
-            <NavBarItem>
-              <Link to="/" className="perso-link">Home</Link>
-            </NavBarItem>
-            <NavBarItem>
-              <Link to="/create" className="perso-link">Create Publication</Link>
-            </NavBarItem>
+              <MainTitle>PANGEA</MainTitle>
+              <NavBarItem>
+                <Link to="/" className="perso-link">Home</Link>
+              </NavBarItem>
+              <NavBarItem>
+                <Link to="/create" className="perso-link">Create Publication</Link>
+              </NavBarItem>
+              <NavBarItem>
+                <Link to="/topic-add" className="perso-link">Add Topic</Link>
+              </NavBarItem>
             </div>
             
             <div>
@@ -75,6 +79,10 @@ function App() {
 
           <Route path="/create">
             <PublicationCreate />
+          </Route>
+
+          <Route path="/topic-add">
+            <TopicForm />
           </Route>
           
           <Route path="/:id">

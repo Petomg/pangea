@@ -35,7 +35,6 @@ function PublicationList(){
         <BannerBtn href='/create'>Tirate un debate Pa</BannerBtn>
       </Banner> 
       <Wrapper id="pub-list">
-        <h1>Publications</h1>
         
         {pubs.map(pub => ( 
 
