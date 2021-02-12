@@ -23,7 +23,7 @@ router.get('/get_posts', function(req, res, next) {
 
 
 router.get('/get_posts/:pid', function(req,res,next){
-    PostModel.findById(req.params.pid).lean().populate("comments").then( (post) => {
+    PostModel.findById(req.params.pid).lean().populate("comments").populate("author").then( (post) => {
         res.json(post);
       }
     ).catch((err) => {

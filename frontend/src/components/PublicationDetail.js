@@ -54,10 +54,12 @@ function PublicationDetail(){
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
-        return (
+          return (
             <Wrapper className="pub-detail">
                 <Title>{pubFields.title}</Title>
-                
+                {pubFields.author !== undefined &&
+                  <p>User: {pubFields.author.name}</p>
+                }
                 <b>{general.formatDate(pubFields.createdAt)}</b>
                 <p>{pubFields.description}</p>
                 <h4>VOTES: {pubFields.upvotes}</h4>
@@ -69,7 +71,7 @@ function PublicationDetail(){
                 ))}
                 </TopicList>
 
-                {general.checkUserValid(pubFields.author) &&
+                {pubFields.author !== undefined && general.checkUserValid(pubFields.author._id) &&
                   <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
                 }
                 <Urn urnid={pubFields.urn}></Urn>
