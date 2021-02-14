@@ -9,6 +9,9 @@ import env from "react-dotenv";
 
 import Urn from "./Urn";
 
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
+
 function PublicationDetail(){
     const { handleSubmit, register, errors } = useForm();
     const [error, setError] = useState(null);
@@ -24,7 +27,8 @@ function PublicationDetail(){
         axios({
           method: 'post',
           url: `${env.API_URL}/comments/${id}`,
-          data: values
+          data: {author: cookies.get("nToken"),
+                values}
         }).then(
           //Redirect to home
           //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
@@ -80,19 +84,26 @@ function PublicationDetail(){
                 
                 <CommentSection onSubmit={handleSubmit(addComment)}>
                   <h2>Opinions</h2>
-                  <CommentBox 
-                    name="content"
-                    ref={register} 
-                    placeholder="Your comment...">
-                  </CommentBox>
-                  {errors.content && errors.content.message}
-                  
-                  <div>
-                    <CommentButton type="submit">Save</CommentButton>
-                  </div>
+                  {general.isLoggedIn() &&
+                    <>
+                    <CommentBox 
+                      name="content"
+                      ref={register} 
+                      placeholder="Your comment...">
+                    </CommentBox>
+                    {errors.content && errors.content.message}
+                    
+                    <div>
+                      <CommentButton type="submit">Save</CommentButton>
+                    </div>
+                    </>
+                  }
 
                   {comments.map(comment => (
                       <CommentIndiv>
+                        {comment.author !== undefined && 
+                          <b>{comment.author.name} :: </b>
+                        }
                         <i className="date-comment">{general.formatDate(comment.createdAt)}</i>
                         <p key={comment._id}>{comment.content}</p>
                       </CommentIndiv>

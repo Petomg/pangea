@@ -23,7 +23,11 @@ router.get('/get_posts', function(req, res, next) {
 
 
 router.get('/get_posts/:pid', function(req,res,next){
-    PostModel.findById(req.params.pid).lean().populate("comments").populate("author").then( (post) => {
+    PostModel.findById(req.params.pid).lean().populate({ 
+                                                path: 'comments', 
+                                                populate: { path: 'author' } 
+                                              })
+    .populate("author").then( (post) => {
         res.json(post);
       }
     ).catch((err) => {
@@ -91,9 +95,13 @@ router.post('/delete_post/:pid', function(req, res, next) {
 
 router.post("/comments/:pid", function(req, res) {
   // INSTANTIATE INSTANCE OF MODEL
-  let content = req.body.content;
+  let content = req.body.values.content;
+  let token = req.body.author;
 
-  const comment = new CommentsModel({content});
+  let decodedToken = jwt.decode(token, { complete: true }) || {};
+  let author_id = decodedToken.payload.user._id;
+
+  const comment = new CommentsModel({content: content, author: author_id});
 
   // SAVE INSTANCE OF Comment MODEL TO DB
   comment
