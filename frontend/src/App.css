@@ -28,6 +28,26 @@
   text-decoration: none;
   color: white;
 }
+
+.perso-link-profile {
+  display: inline-block;
+  text-decoration:none;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 1em;
+  margin-left: 1em;
+  background-color: white;
+  border-radius: 2em;
+  color: black;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+}
+
+.perso-link-profile:hover {
+  background-color: #F7ECDF;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.4);
+}
+
 .App-link {
   color: #61dafb;
 }

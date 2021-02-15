@@ -17,6 +17,7 @@ let topicRouter = require('./routes/topics');
 let loginRouter = require('./routes/login');
 let registerRouter = require('./routes/register');
 let logoutRouter = require('./routes/logout');
+let userRouter = require('./routes/user');
 
 
 var app = express();
@@ -55,7 +56,7 @@ app.use('/topics', topicRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/logout', logoutRouter)
-
+app.use('/user', userRouter)
 
 
 

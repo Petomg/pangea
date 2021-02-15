@@ -15,13 +15,24 @@ import LoginForm from "./components/Login";
 import LogoutForm from "./components/Logout";
 import RegisterForm from "./components/Register";
 import TopicForm from "./components/TopicAdd";
+import Profile from "./components/Profile";
 
 import * as general from "./operational/general_functionality";
+
+import jwt from 'jsonwebtoken';
 
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 function App() {
+  let userToken = cookies.get('nToken');
+  let uid = null;
+  let uname = null;
+  if (userToken !== undefined && userToken !== null) {
+    let decodedToken = jwt.decode(userToken, { complete: true }) || {};  
+    uid = decodedToken.payload.user._id;
+    uname = decodedToken.payload.user.name;
+  } 
 
   return (
     <div className="App">
@@ -50,9 +61,14 @@ function App() {
                 </NavBarItem>
               }
               {general.isLoggedIn() &&
-                <NavBarItem>
-                  <Link to="/logout" className="perso-link">Logout</Link>
-                </NavBarItem>
+                <>
+                  
+                  <Link to={`/profile/${uid}`} className="perso-link-profile">{uname || "Profile"}</Link>
+                 
+                  <NavBarItem>
+                    <Link to="/logout" className="perso-link">Logout</Link>
+                  </NavBarItem>
+                </>
               }
               <NavBarItem>
                 <Link to="/register" className="perso-link">Sign up</Link>
@@ -84,7 +100,11 @@ function App() {
           <Route path="/topic-add">
             <TopicForm />
           </Route>
-          
+
+          <Route path="/profile/:id">
+              <Profile />
+          </Route>
+
           <Route path="/:id">
               <PublicationDetail />
           </Route>
