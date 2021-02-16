@@ -75,9 +75,7 @@ function PublicationDetail(){
                 ))}
                 </TopicList>
 
-                {pubFields.author !== undefined && general.checkUserValid(pubFields.author._id) &&
-                  <ButtonS onClick={(e) => deletePost(e, pubFields._id)}>DELETE</ButtonS>
-                }
+                
                 <Urn urnid={pubFields.urn}></Urn>
 
 
@@ -127,16 +125,6 @@ function PublicationDetail(){
     
   }
 
-  function deletePost(event, id){
-    axios({
-      method: 'post',
-      url: `${env.API_URL}/delete_post/${id}`,
-    }).then(
-        //Redirect to home
-        window.location.href = "/"
-    );
-    
-  }
 }
 
 export default PublicationDetail;

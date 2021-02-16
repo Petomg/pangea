@@ -116,7 +116,6 @@ const CommentIndiv = styled.div`
 const CommentButton = styled.button`
     padding: 0.5em;
     font-size: 1em;
-    width: 6em;
     border: hidden;
     border-radius: 1em;
     background-color: #F7ECDF;
