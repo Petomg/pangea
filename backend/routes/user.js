@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const UserModel = require("../models/User");
+let UserModel = require("../models/User");
+let PostModel = require('../models/Post');
 
 router.get('/:uid', function(req, res, next){
     UserModel.findById(req.params.uid).then( (user) => {
@@ -10,5 +11,13 @@ router.get('/:uid', function(req, res, next){
         return console.error(err);
     })
 })
+
+router.get('/posts/:uid', function(req, res, next) {
+    PostModel.find({author: req.params.uid}).then( (posts) => {
+        res.json(posts);
+    }).catch( (err) => {
+        return console.error(err);
+    })
+});
 
 module.exports = router;

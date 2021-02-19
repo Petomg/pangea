@@ -9,8 +9,11 @@ import env from "react-dotenv";
 
 import Urn from "./Urn";
 
+
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
+
+
 
 function PublicationDetail(){
     const { handleSubmit, register, errors } = useForm();
@@ -20,9 +23,8 @@ function PublicationDetail(){
     const [topics, setTopics] = useState([]);
     const [comments, setComments] = useState([]);
   
-
     let {id} = useParams();
-
+    
     const addComment = values => {
         axios({
           method: 'post',
@@ -67,8 +69,9 @@ function PublicationDetail(){
                 <b>{general.formatDate(pubFields.createdAt)}</b>
                 <p>{pubFields.description}</p>
                 <h4>VOTES: {pubFields.upvotes}</h4>
-                <ButtonS primary onClick={(e) => sendUpvote(e, pubFields.upvotes, pubFields._id)}>VOTE</ButtonS>
-                
+                {general.isLoggedIn() && 
+                  <ButtonS primary onClick={(e) => sendUpvote(e, pubFields._id)}>VOTE</ButtonS>
+                }
                 <TopicList id="topics-detail">
                 {topics.map(topic => (
                   <Topic key={topic}>{topic}</Topic>
@@ -114,14 +117,19 @@ function PublicationDetail(){
 
 
   // Funcion que maneja el upvote.
-  function sendUpvote(event, currUps, id){
+  function sendUpvote(event, id){
     axios({
       method: 'post',
       url: `${env.API_URL}/upvote_post/${id}`,
+      data: {
+        author: cookies.get("nToken")
+      }
 
+    }).then( (res) => {
+      setPubFields({...pubFields, upvotes: res.data});
     });
 
-    setPubFields({...pubFields, upvotes: currUps + 1});
+    
     
   }
 

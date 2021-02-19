@@ -26,7 +26,6 @@ let PostSchema = mongoose.Schema({
     min: 0
   },
 
-  // TODO: Agregar Comentarios
   // Votacion
   urn: {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,7 +34,9 @@ let PostSchema = mongoose.Schema({
 
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }],
 
-  author : { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+  author : { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
+  upvotesUsers : [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
   
 },{
   timestamps: true

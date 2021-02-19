@@ -42,6 +42,7 @@ router.post('/add_post', function(req, res, next) {
   let description = req.body.values.description;
   let topics = req.body.values.topics;
   let upvotes = 0;
+  let upvotesUsers = [];
   let token = req.body.author;
 
   let decodedToken = jwt.decode(token, { complete: true }) || {};
@@ -60,7 +61,7 @@ router.post('/add_post', function(req, res, next) {
       } 
   });
 
-  let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id, author: author_id});
+  let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id, author: author_id, upvotesUsers: upvotesUsers});
 
   newPost.save(function(err, pub){
       if (err) {
@@ -77,8 +78,25 @@ router.post('/upvote_post/:pid', function(req, res, next) {
     if (err){
       return console.error(`No post found with id: ${pid}`);
     } else {
-      post.upvotes = post.upvotes + 1;
+      let token = req.body.author;
+
+      let decodedToken = jwt.decode(token, { complete: true }) || {};
+      let user_id = decodedToken.payload.user._id;
+
+      if(post.upvotesUsers.includes(user_id)){
+          post.upvotesUsers.splice(post.upvotesUsers.indexOf(user_id), 1);
+          post.upvotes = post.upvotes - 1;
+      } else {
+          post.upvotesUsers.push(user_id);
+          post.upvotes = post.upvotes + 1;
+      }
+
+      //post.upvotes = post.upvotes + 1;
+      let newUps = post.upvotes;
+      
       post.save();
+
+      return res.json(newUps);
     }
   });
 
