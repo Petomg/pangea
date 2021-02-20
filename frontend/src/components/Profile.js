@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import env from "react-dotenv";
@@ -8,11 +8,14 @@ import { Wrapper, Title, ButtonS, Topic, TopicList, Card, CommentButton } from "
 
 import * as general from "../operational/general_functionality";
 
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const Profile = () => {
     let [userFields, setUserFields] = useState({});
     let [userPubs, setUserPubs] = useState([]);
     let [showPubs, setShowPubs] = useState(false);
+    let [showPending, setShowPending] = useState(false);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -46,7 +49,21 @@ const Profile = () => {
     let loadPublications = () => {
        setShowPubs(true);
     }
+    
+    let loadPendingFriends = () => {
+      setShowPending(true);
+    }
 
+    //Se entiende que es solicitud del logueado al del perfil
+    let addAsFriend = () => {
+      axios({
+        method: "post",
+        url:`${env.API_URL}/user/add_friend/${userFields._id}`,
+        data: {
+          friend_token: cookies.get("nToken")
+        }
+      })
+    }
 
     function deletePost(event, id){
         axios({
@@ -70,6 +87,21 @@ const Profile = () => {
             <div>
                 <h1>{userFields.name}</h1>
                 <h3>{userFields.email}</h3>
+                {!general.checkUserValid(userFields._id) && general.isLoggedIn() &&
+                  <ButtonS primary onClick={addAsFriend}>Add Friend +</ButtonS>
+                }
+                <CommentButton onClick={loadPendingFriends}>Show me my pendings madafaka</CommentButton>
+                {showPending && 
+                  <div>
+                  {userFields.pending_friends.map( friend => (
+                    <div key={friend._id}>
+                      <Link href={"/profile/" + friend.name}>{friend.name}</Link>
+                      <button>Accept</button>
+                      <button>Decline</button>
+                    </div>
+                  ))}
+                  </div>
+                }
                 <CommentButton onClick={loadPublications}>Show me my publications madafaka</CommentButton>
             </div>
             {userPubs !== [] && showPubs &&

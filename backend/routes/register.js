@@ -6,12 +6,16 @@ const router = express.Router();
 router.post('/', function (req, res, next) {
     let body = req.body;
     let { name, email, password, role } = body;
+    let friends = [];
+    let pending_friends = [];
 
     let newUser = new User({
         name,
         email,
         password: bcrypt.hashSync(password, 10),
-        role
+        role,
+        friends,
+        pending_friends
     });
     
     newUser.save((err, user) => {
