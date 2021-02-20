@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 import { useParams, Redirect } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { Title, Wrapper, ButtonS, TopicList, Topic, CommentSection, CommentBox, CommentIndiv, CommentButton } from "../styled-components/ListingPubs";
@@ -64,7 +65,7 @@ function PublicationDetail(){
             <Wrapper className="pub-detail">
                 <Title>{pubFields.title}</Title>
                 {pubFields.author !== undefined &&
-                  <p>User: {pubFields.author.name}</p>
+                 <p>User: <Link to={`/profile/${pubFields.author.name}`}>{pubFields.author.name}</Link></p>
                 }
                 <b>{general.formatDate(pubFields.createdAt)}</b>
                 <p>{pubFields.description}</p>
@@ -103,7 +104,7 @@ function PublicationDetail(){
                   {comments.map(comment => (
                       <CommentIndiv>
                         {comment.author !== undefined && 
-                          <b>{comment.author.name} :: </b>
+                          <b><Link to={`/profile/${comment.author.name}`}>{comment.author.name}</Link> :: </b>
                         }
                         <i className="date-comment">{general.formatDate(comment.createdAt)}</i>
                         <p key={comment._id}>{comment.content}</p>

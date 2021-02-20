@@ -6,6 +6,7 @@ import env from "react-dotenv";
 
 import { Wrapper, Title, ButtonS, Topic, TopicList, Card, CommentButton } from "../styled-components/ListingPubs";
 
+import * as general from "../operational/general_functionality";
 
 
 const Profile = () => {
@@ -15,29 +16,31 @@ const Profile = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    let {id} = useParams();
-    console.log(id);
-
+    let {uname} = useParams();
+    
     useEffect(() => {
-            axios.get(`${env.API_URL}/user/${id}`)
+           
+            axios.get(`${env.API_URL}/user/profile/${uname}`)
               .then(
                 (result) => {
                   setIsLoaded(true);
                   setUserFields(result.data);
+
+                  axios.get(`${env.API_URL}/user/posts/${result.data._id}`)
+                  .then(
+                    (result) => {
+                        setUserPubs(result.data);
+                    }
+                  )
                 },
                 (error) => {
                   setIsLoaded(true);
                   setError(error);
                 }
               )
-
-            axios.get(`${env.API_URL}/user/posts/${id}`)
-              .then(
-                (result) => {
-                    setUserPubs(result.data);
-                    console.log(result.data);
-                }
-            )
+            
+            
+            
     }, []);
 
     let loadPublications = () => {
@@ -81,7 +84,10 @@ const Profile = () => {
                             <Topic key={topic}>{topic}</Topic>
                         ))}
                         </TopicList>
-                        <ButtonS onClick={(e) => deletePost(e, pub._id)}>DELETE</ButtonS>
+                        {general.checkUserValid(userFields._id) &&
+                          <ButtonS onClick={(e) => deletePost(e, pub._id)}>DELETE</ButtonS>
+                        }
+                        <ButtonS primary href={"/" + pub._id}>Detail</ButtonS>
                     </Card>
                     ))}
                 </Wrapper>

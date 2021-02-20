@@ -63,7 +63,7 @@ function App() {
               {general.isLoggedIn() &&
                 <>
                   
-                  <Link to={`/profile/${uid}`} className="perso-link-profile">{uname || "Profile"}</Link>
+                  <Link to={`/profile/${uname}`} className="perso-link-profile">{uname || "Profile"}</Link>
                  
                   <NavBarItem>
                     <Link to="/logout" className="perso-link">Logout</Link>
@@ -101,7 +101,7 @@ function App() {
             <TopicForm />
           </Route>
 
-          <Route path="/profile/:id">
+          <Route path="/profile/:uname">
               <Profile />
           </Route>
 

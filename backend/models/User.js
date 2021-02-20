@@ -9,6 +9,7 @@ let rolesValidos = {
 let userSchema = new mongoose.Schema({
     name: {
         type: String,
+        unique: true,
         required: [true, 'El nombre es necesario'],
     },
     email: {
@@ -26,6 +27,8 @@ let userSchema = new mongoose.Schema({
         required: [true],
         enum: rolesValidos,
     },
+
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
 });
 
 // Elimina la key password del objeto que retorna al momento de crear un usuario

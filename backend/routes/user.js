@@ -12,6 +12,14 @@ router.get('/:uid', function(req, res, next){
     })
 })
 
+router.get('/profile/:uname', function(req, res, next){
+    UserModel.findOne({name: req.params.uname}).then( (user) => {
+        res.json(user);
+    }).catch( (err) => {
+        return console.error(err);
+    })
+})
+
 router.get('/posts/:uid', function(req, res, next) {
     PostModel.find({author: req.params.uid}).then( (posts) => {
         res.json(posts);
