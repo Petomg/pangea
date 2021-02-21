@@ -16,6 +16,7 @@ const Profile = () => {
     let [userPubs, setUserPubs] = useState([]);
     let [showPubs, setShowPubs] = useState(false);
     let [showPending, setShowPending] = useState(false);
+    let [showFriends, setShowFriends] = useState(false);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -54,6 +55,10 @@ const Profile = () => {
       setShowPending(true);
     }
 
+    let loadFriends = () => {
+      setShowFriends(true);
+    }
+
     //Se entiende que es solicitud del logueado al del perfil
     let addAsFriend = () => {
       axios({
@@ -61,6 +66,26 @@ const Profile = () => {
         url:`${env.API_URL}/user/add_friend/${userFields._id}`,
         data: {
           friend_token: cookies.get("nToken")
+        }
+      })
+    }
+
+    let acceptFriend = (fid) => {
+      axios({
+        method: "post",
+        url:`${env.API_URL}/user/confirm_friend/${userFields._id}`,
+        data: {
+          friend_id: fid
+        }
+      })
+    }
+
+    let declineFriend = (fid) => {
+      axios({
+        method: "post",
+        url:`${env.API_URL}/user/decline_friend/${userFields._id}`,
+        data: {
+          friend_id: fid
         }
       })
     }
@@ -77,6 +102,7 @@ const Profile = () => {
     }
 
 
+
     if (error) {
         return <div>Error: {error.message}</div>;
       } else if (!isLoaded) {
@@ -90,18 +116,36 @@ const Profile = () => {
                 {!general.checkUserValid(userFields._id) && general.isLoggedIn() &&
                   <ButtonS primary onClick={addAsFriend}>Add Friend +</ButtonS>
                 }
+                
+                {general.checkUserValid(userFields._id) &&
+                <>
                 <CommentButton onClick={loadPendingFriends}>Show me my pendings madafaka</CommentButton>
                 {showPending && 
                   <div>
                   {userFields.pending_friends.map( friend => (
                     <div key={friend._id}>
                       <Link href={"/profile/" + friend.name}>{friend.name}</Link>
-                      <button>Accept</button>
-                      <button>Decline</button>
+                      <button onClick={acceptFriend(friend._id)}>Accept</button>
+                      <button onClick={declineFriend(friend._id)}>Decline</button>
                     </div>
                   ))}
                   </div>
                 }
+                </>
+                }
+
+                <CommentButton onClick={loadFriends}>Show me my friends madafaka</CommentButton>
+                {showFriends && 
+                  <div>
+                  {userFields.friends.map( friend => (
+                    <div key={friend._id}>
+                      <Link href={"/profile/" + friend.name}>{friend.name}</Link>
+                    </div>
+                  ))}
+                  </div>
+                }
+            
+              
                 <CommentButton onClick={loadPublications}>Show me my publications madafaka</CommentButton>
             </div>
             {userPubs !== [] && showPubs &&
