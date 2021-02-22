@@ -70,7 +70,8 @@ const Profile = () => {
       })
     }
 
-    let acceptFriend = (fid) => {
+    let acceptFriend = (e, fid) => {
+      e.preventDefault();
       axios({
         method: "post",
         url:`${env.API_URL}/user/confirm_friend/${userFields._id}`,
@@ -80,7 +81,8 @@ const Profile = () => {
       })
     }
 
-    let declineFriend = (fid) => {
+    let declineFriend = (e, fid) => {
+      e.preventDefault();
       axios({
         method: "post",
         url:`${env.API_URL}/user/decline_friend/${userFields._id}`,
@@ -125,8 +127,8 @@ const Profile = () => {
                   {userFields.pending_friends.map( friend => (
                     <div key={friend._id}>
                       <Link href={"/profile/" + friend.name}>{friend.name}</Link>
-                      <button onClick={acceptFriend(friend._id)}>Accept</button>
-                      <button onClick={declineFriend(friend._id)}>Decline</button>
+                      <button onClick={(e) => acceptFriend(e, friend._id)}>Accept</button>
+                      <button onClick={(e) => declineFriend(e, friend._id)}>Decline</button>
                     </div>
                   ))}
                   </div>
