@@ -71,6 +71,21 @@ textarea {
   font-size: 0.9em;
 }
 
+.icon-pending {
+  width: 1.5em;
+  margin: auto 0.5em;
+  cursor: pointer;
+}
+
+.friend-tag {
+  text-decoration: none;
+  color: black;
+  margin: auto 0.5em;
+  font-size: 1.3em;
+  padding: 0.4em;
+  border-radius: 2em;
+}
+
 .topic-select {
   display: inline-block;
   margin-right: 1em;

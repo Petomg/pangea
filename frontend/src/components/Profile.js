@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-
 import env from "react-dotenv";
 
 import { Wrapper, Title, ButtonS, Topic, TopicList, Card, CommentButton } from "../styled-components/ListingPubs";
+import { FriendTag } from "../styled-components/ProfileStyles";
 
 import * as general from "../operational/general_functionality";
 
@@ -125,11 +125,11 @@ const Profile = () => {
                 {showPending && 
                   <div>
                   {userFields.pending_friends.map( friend => (
-                    <div key={friend._id}>
-                      <Link href={"/profile/" + friend.name}>{friend.name}</Link>
-                      <button onClick={(e) => acceptFriend(e, friend._id)}>Accept</button>
-                      <button onClick={(e) => declineFriend(e, friend._id)}>Decline</button>
-                    </div>
+                    <FriendTag key={friend._id}>
+                      <Link to={"/profile/" + friend.name} className="friend-tag">{friend.name}</Link>
+                      <img className="icon-pending" src={require('../imgs/check-icon.png')} alt="Accept" onClick={(e) => acceptFriend(e, friend._id)}></img>
+                      <img className="icon-pending" src={require('../imgs/decline-icon1.png')} alt="Decline" onClick={(e) => declineFriend(e, friend._id)}></img>
+                    </FriendTag>
                   ))}
                   </div>
                 }
@@ -140,9 +140,12 @@ const Profile = () => {
                 {showFriends && 
                   <div>
                   {userFields.friends.map( friend => (
-                    <div key={friend._id}>
-                      <Link href={"/profile/" + friend.name}>{friend.name}</Link>
-                    </div>
+                    <FriendTag key={friend._id}>
+                      <Link to={"/profile/" + friend.name} className="friend-tag">{friend.name}</Link>
+                      {general.checkUserValid(userFields._id) &&
+                      <ButtonS>Un-Friend</ButtonS>
+                      }
+                    </FriendTag>
                   ))}
                   </div>
                 }
