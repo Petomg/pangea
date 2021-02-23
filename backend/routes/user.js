@@ -50,7 +50,6 @@ router.post('/add_friend/:uid', function(req, res, next) {
 });
 
 router.post('/confirm_friend/:uid', async function(req, res, next) {
-   // UserModel.findById(req.params.uid).then( (user) => {
         let user1 = await UserModel.findById(req.params.uid);
 
         let friend_id = req.body.friend_id;
@@ -71,18 +70,37 @@ router.post('/confirm_friend/:uid', async function(req, res, next) {
         user1.save();
         user2.save();
 
-        res.redirect("/");
         
-    /* }).catch( (err) => {
-        return console.error(err);
-    })*/
+        await user1.populate('friends').populate('pending_friends').execPopulate();
 
-
-
+        res.json(user1);
 });
 
+router.post('/delete_friend/:uid', async function(req, res, next) {
+         let user1 = await UserModel.findById(req.params.uid);
+ 
+         let friend_id = req.body.friend_id;
+
+         let user2 = await UserModel.findById(friend_id);
+
+        if (user1.friends.includes(friend_id)){
+            user1.friends.splice(user1.friends.indexOf(friend_id),1);
+            user2.friends.splice(user2.friends.indexOf(user1._id),1);
+        }
+        
+ 
+         user1.save();
+         user2.save();
+         
+         await user1.populate('friends').populate('pending_friends').execPopulate();
+
+         res.json(user1);
+         
+ });
+ 
+
 router.post('/decline_friend/:uid', function(req, res, next) {
-    UserModel.findById(req.params.uid).then( (user) => {
+    UserModel.findById(req.params.uid).then( async (user) => {
 
         let friend_id = req.body.friend_id;
 
@@ -92,7 +110,9 @@ router.post('/decline_friend/:uid', function(req, res, next) {
 
         user.save();
 
-        res.redirect("/");
+        await user.populate('friends').populate('pending_friends').execPopulate();
+
+        res.json(user);
         
     }).catch( (err) => {
         return console.error(err);
