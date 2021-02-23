@@ -78,6 +78,8 @@ const Profile = () => {
         data: {
           friend_id: fid
         }
+      }).then ( (result) => {
+        setUserFields(result.data);
       })
     }
 
@@ -89,6 +91,21 @@ const Profile = () => {
         data: {
           friend_id: fid
         }
+      }).then( (result) => {
+        setUserFields(result.data);
+      });
+    }
+
+    let unFriend = (e, fid) => {
+      e.preventDefault();
+      axios({
+        method: "post",
+        url:`${env.API_URL}/user/delete_friend/${userFields._id}`,
+        data: {
+          friend_id: fid
+        }
+      }).then ( (result) => {
+          setUserFields(result.data);
       })
     }
 
@@ -143,7 +160,7 @@ const Profile = () => {
                     <FriendTag key={friend._id}>
                       <Link to={"/profile/" + friend.name} className="friend-tag">{friend.name}</Link>
                       {general.checkUserValid(userFields._id) &&
-                      <ButtonS>Un-Friend</ButtonS>
+                        <ButtonS onClick={(e) => unFriend(e, friend._id)}>Un-Friend</ButtonS>
                       }
                     </FriendTag>
                   ))}
