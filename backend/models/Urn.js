@@ -8,11 +8,15 @@ let UrnSchema = mongoose.Schema({
     min: 0
   },
 
+  posUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+
   negVotes: {
     type: Number,
     required: true,
     min: 0
   },
+
+  negUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
 
   isClosed: {
     type: Boolean,

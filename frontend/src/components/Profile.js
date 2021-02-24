@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import env from "react-dotenv";
+import ImageUploader from 'react-images-upload';
 
 import { Wrapper, Title, ButtonS, Topic, TopicList, Card, CommentButton } from "../styled-components/ListingPubs";
 import { FriendTag } from "../styled-components/ProfileStyles";
@@ -14,6 +15,7 @@ const cookies = new Cookies();
 const Profile = () => {
     let [userFields, setUserFields] = useState({});
     let [userPubs, setUserPubs] = useState([]);
+    let [picture, setPicture] = useState();
     let [showPubs, setShowPubs] = useState(false);
     let [showPending, setShowPending] = useState(false);
     let [showFriends, setShowFriends] = useState(false);
@@ -119,6 +121,21 @@ const Profile = () => {
         );
         
     }
+  
+    let uploadPicture = (pic) => {
+      console.log(pic[0]);
+      setPicture(pic[0]);
+      let fileName = pic[0].name;
+      let contentType = pic[0].type;
+      axios({
+        method: "post",
+        url:`${env.API_URL}/images`,
+        data: {
+          fileName: fileName,
+          contentType: contentType
+        }
+      })
+    }
 
 
 
@@ -188,8 +205,17 @@ const Profile = () => {
                         <ButtonS primary href={"/" + pub._id}>Detail</ButtonS>
                     </Card>
                     ))}
+
                 </Wrapper>
             }
+
+              <ImageUploader
+                withIcon={true}
+                buttonText='Choose images'
+                onChange={(pic) => uploadPicture(pic)}
+                imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                maxFileSize={5242880}
+              />
             </>
           );
       }

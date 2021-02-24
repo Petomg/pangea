@@ -18,6 +18,7 @@ let loginRouter = require('./routes/login');
 let registerRouter = require('./routes/register');
 let logoutRouter = require('./routes/logout');
 let userRouter = require('./routes/user');
+let imageRouter = require('./routes/image');
 
 
 var app = express();
@@ -55,10 +56,9 @@ app.use('/voting', votingRouter);
 app.use('/topics', topicRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
-app.use('/logout', logoutRouter)
-app.use('/user', userRouter)
-
-
+app.use('/logout', logoutRouter);
+app.use('/user', userRouter);
+app.use('/images', imageRouter);
 
 
 mongoose.connect('mongodb://localhost:27017/pange' , {useNewUrlParser: true, useUnifiedTopology: true});

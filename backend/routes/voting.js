@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let UrnModel = require('../models/Urn');
+const jwt = require('jsonwebtoken');
 
 router.get('/', function(req, res, next) {
     UrnModel.find(function(err, urn){
@@ -39,15 +40,29 @@ router.get('/:vid', function(req, res, next) {
 });
 
 router.post('/positive/:vid', function(req, res, next){
-    
     UrnModel.findById(req.params.vid, function(err, urn) {
         if (err) {
             return console.error(`No urn found with id: ${req.params.vid}`)
         } else {
+            let decodedToken = jwt.decode(req.body.user_token, { complete: true }) || {};
+            let user_id = decodedToken.payload.user._id;
+
             if (!(urn.isClosed)){
-                urn.posVotes = urn.posVotes + 1;
+                if(urn.negUsers.includes(user_id)){
+                    urn.negVotes = urn.negVotes - 1;
+                    urn.posVotes = urn.posVotes + 1;
+                    urn.negUsers.splice(urn.negUsers.indexOf(user_id));
+                    urn.posUsers.push(user_id);
+                    
+                } else if (!urn.posUsers.includes(user_id)){
+                    urn.posVotes = urn.posVotes + 1;
+                    urn.posUsers.push(user_id);
+                }
+
                 urn.save();
             }
+
+            return res.json(urn);
         }
     });
 })
@@ -58,10 +73,25 @@ router.post('/negative/:vid', function(req, res, next){
         if (err) {
             return console.error(`No urn found with id: ${vid}`)
         } else {
+            let decodedToken = jwt.decode(req.body.user_token, { complete: true }) || {};
+            let user_id = decodedToken.payload.user._id;
+
             if (!(urn.isClosed)){
-                urn.negVotes = urn.negVotes + 1;
+                if(urn.posUsers.includes(user_id)){
+                    urn.posVotes = urn.posVotes - 1;
+                    urn.negVotes = urn.negVotes + 1;
+                    urn.posUsers.splice(urn.posUsers.indexOf(user_id));
+                    urn.negUsers.push(user_id);
+                    
+                } else if (!urn.negUsers.includes(user_id)){
+                    urn.negVotes = urn.negVotes + 1;
+                    urn.negUsers.push(user_id);
+                }
+
                 urn.save();
             }
+
+            return res.json(urn);
         }
     });
 })

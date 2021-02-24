@@ -3,6 +3,10 @@ import axios from 'axios';
 import { ButtonV, Result } from "../styled-components/UrnStyles";
 
 import env from "react-dotenv";
+import * as general from "../operational/general_functionality";
+
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 function Urn(props){
     const [posVotes, setPosVotes] = useState(0);
@@ -44,8 +48,12 @@ function Urn(props){
             <div id='urn'>
                 <Result percentage={String(get_percentage())}></Result>
                 <p>Positive: {posVotes} | Negative: {negVotes}</p>
-                <ButtonV positive closed={isClosed} onClick={(e) => sendVote(e, urnID, 'positive')}>On Favor</ButtonV>
-                <ButtonV closed={isClosed} onClick={(e) => sendVote(e, urnID, 'negative')}>Against</ButtonV>
+                {general.isLoggedIn() &&
+                    <div>
+                        <ButtonV positive closed={isClosed} onClick={(e) => sendVote(e, urnID, 'positive')}>On Favor</ButtonV>
+                        <ButtonV closed={isClosed} onClick={(e) => sendVote(e, urnID, 'negative')}>Against</ButtonV>
+                    </div>
+                }
             </div>
         );
     }
@@ -62,13 +70,15 @@ function Urn(props){
         axios({
           method: 'post',
           url: `${env.API_URL}/voting/${type}/${id}`,
+          data: {
+            user_token: cookies.get("nToken")
+          }
     
+        }).then((urn) => {
+            console.log(urn);
+            setPosVotes(urn.data.posVotes);
+            setNegVotes(urn.data.negVotes);
         });
-        if(type.localeCompare('positive') === 0){
-            setPosVotes(posVotes + 1); 
-        } else {
-            setNegVotes(negVotes + 1);
-        }
       }
     
 }

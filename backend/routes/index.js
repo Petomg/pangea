@@ -50,10 +50,12 @@ router.post('/add_post', function(req, res, next) {
 
   let posVotes = 0;
   let negVotes = 0;
+  let posUsers = [];
+  let negUsers = [];
   let isClosed = false;
 
 
-  let newUrn = new UrnModel({posVotes, negVotes, isClosed});
+  let newUrn = new UrnModel({posVotes, posUsers, negVotes, negUsers, isClosed});
 
   newUrn.save(function(err, urn){
       if(err) {
