@@ -91,6 +91,12 @@ textarea {
   margin-right: 1em;
 }
 
+.addressing {
+  display: inline-block;
+  color: cadetblue;
+  font-size: 0.9em;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

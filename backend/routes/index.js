@@ -4,6 +4,7 @@ let PostModel = require('../models/Post');
 let UrnModel = require('../models/Urn');
 let CommentsModel = require('../models/Comments');
 const jwt = require('jsonwebtoken');
+const { populate } = require('../models/Comments');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -25,7 +26,13 @@ router.get('/get_posts', function(req, res, next) {
 router.get('/get_posts/:pid', function(req,res,next){
     PostModel.findById(req.params.pid).lean().populate({ 
                                                 path: 'comments', 
-                                                populate: { path: 'author' } 
+                                                populate: { path: 'author' }, 
+                                              }).populate({
+                                                path: 'comments',
+                                                populate: { 
+                                                    path: 'subcomments',
+                                                    populate: 'author'
+                                                } 
                                               })
     .populate("author").then( (post) => {
         res.json(post);
@@ -132,6 +139,35 @@ router.post("/comments/:pid", function(req, res) {
     .then(post => {
       post.comments.unshift(comment);
       return post.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+router.post("/comments/sub/:cid", function(req, res) {
+  // INSTANTIATE INSTANCE OF MODEL
+  let content = req.body.content;
+  let token = req.body.author;
+
+  let decodedToken = jwt.decode(token, { complete: true }) || {};
+  let author_id = decodedToken.payload.user._id;
+
+  let subcomments = []
+
+
+  const comment = new CommentsModel({content: content, author: author_id, subcomments: subcomments});
+
+  console.log(req.params.cid);
+  // SAVE INSTANCE OF Comment MODEL TO DB
+  comment
+    .save()
+    .then(comment => {
+      return CommentsModel.findById(req.params.cid);
+    })
+    .then(parent_comment => {
+      parent_comment.subcomments.unshift(comment);
+      return parent_comment.save();
     })
     .catch(err => {
       console.log(err);

@@ -110,7 +110,7 @@ const CommentIndiv = styled.div`
     align-items: center;
     justify-content: center;
     border-color: #E6E6F2;
-    border-bottom-style: solid;
+    border-top-style: solid;
 `;
 
 const CommentButton = styled.button`
@@ -134,6 +134,10 @@ const CommentButton = styled.button`
     }
 `;
 
+const SubComments = styled.div`
+    margin-left: 3em;
+`;
+
 export {
     Title,
     Wrapper,
@@ -146,5 +150,6 @@ export {
     CommentSection,
     CommentBox,
     CommentIndiv,
-    CommentButton
+    CommentButton,
+    SubComments,
 }

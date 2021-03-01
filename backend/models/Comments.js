@@ -12,6 +12,8 @@ const CommentSchema = new mongoose.Schema({
         required: true
     },
 
+    subcomments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comments'}]
+
 },{
     timestamps: true
 });
