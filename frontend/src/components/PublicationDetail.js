@@ -23,6 +23,7 @@ function PublicationDetail(){
     const [topics, setTopics] = useState([]);
     const [comments, setComments] = useState([]);
     const [idResponding, setIdResponding] = useState("");
+    const [showResponses, setShowResponses] = useState([]);
   
     let {id} = useParams();
     
@@ -57,6 +58,18 @@ function PublicationDetail(){
     const toggleCommentBox = (e, cid) => {
       e.preventDefault();
       setIdResponding(cid);
+    }
+
+    const toggleResponses = (e, cid) => {
+      e.preventDefault();
+      let newArr = []
+      if(showResponses.includes(cid)){
+        newArr = [...showResponses];
+        newArr.splice(newArr.indexOf(cid));
+      } else {
+        newArr = [...showResponses, cid];
+      }
+      setShowResponses(newArr);
     }
 
     useEffect(() => {
@@ -145,11 +158,19 @@ function PublicationDetail(){
                           </form>
                         }
                         
-                        {comment.subcomments.map(subcomment => (
-                          <SubComments>
-                            <CommentComponent comment={subcomment} parent={comment.author.name}/>
-                          </SubComments>
-                        ))}
+                        <button onClick={(e) => toggleResponses(e, comment._id)}>
+                          {showResponses.includes(comment._id) && "Hide" || "Show"} responses
+                        </button>
+                        
+                        {showResponses.includes(comment._id) && 
+                          <>
+                          {comment.subcomments.map(subcomment => (
+                            <SubComments>
+                              <CommentComponent comment={subcomment} parent={comment.author.name}/>
+                            </SubComments>
+                          ))}
+                          </>
+                        }
                   
                       </>
                   ))}
@@ -182,7 +203,7 @@ const CommentComponent = (props) => {
     <CommentIndiv>
       {props.parent && 
        <>
-       <p class="addressing">@{props.parent}</p><b> :: </b>
+       <p className="addressing">@{props.parent}</p><b> :: </b>
        </>
       }
       {props.comment.author !== undefined && 
