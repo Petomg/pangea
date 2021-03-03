@@ -31,6 +31,12 @@ let userSchema = new mongoose.Schema({
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
 
     pending_friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+
+    reputation: {
+        type: Number,
+        min: 0,
+        required: true
+    }
 });
 
 // Elimina la key password del objeto que retorna al momento de crear un usuario

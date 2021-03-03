@@ -28,3 +28,21 @@ export let checkUserValid = function(userid) {
 export let isLoggedIn = function() {
     return (cookies.get("nToken") !== undefined && cookies.get("nToken") !== null);
 }
+
+export let getReputation = function(rep) {
+    let title = "";
+    if (rep != undefined){
+        if (rep == 0) {
+            title = "Spectator";
+        } else if (rep > 0 && rep <= 1000) {
+            title = "Populizer";
+        } else if (rep > 1000 && rep <= 2000) {
+            title = "Crier";
+        } else if (rep > 2000 && rep <= 3000) {
+            title = "Watson";
+        } else if (rep > 3000) {
+            title = "Argentine Lawyer";
+        }
+    }
+    return title;
+}

@@ -8,6 +8,7 @@ router.post('/', function (req, res, next) {
     let { name, email, password, role } = body;
     let friends = [];
     let pending_friends = [];
+    let reputation = 0;
 
     let newUser = new User({
         name,
@@ -15,9 +16,11 @@ router.post('/', function (req, res, next) {
         password: bcrypt.hashSync(password, 10),
         role,
         friends,
-        pending_friends
+        pending_friends,
+        reputation
     });
-    
+
+
     newUser.save((err, user) => {
 
         if(err) {

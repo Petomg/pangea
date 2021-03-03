@@ -31,7 +31,7 @@ const Profile = () => {
                 (result) => {
                   setIsLoaded(true);
                   setUserFields(result.data);
-
+                  console.log(result.data);
                   axios.get(`${env.API_URL}/user/posts/${result.data._id}`)
                   .then(
                     (result) => {
@@ -148,6 +148,7 @@ const Profile = () => {
             <>
             <div>
                 <h1>{userFields.name}</h1>
+                <h4>{general.getReputation(userFields.reputation)}</h4>
                 <h3>{userFields.email}</h3>
                 {!general.checkUserValid(userFields._id) && general.isLoggedIn() &&
                   <ButtonS primary onClick={addAsFriend}>Add Friend +</ButtonS>

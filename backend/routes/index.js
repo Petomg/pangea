@@ -5,6 +5,7 @@ let UrnModel = require('../models/Urn');
 let CommentsModel = require('../models/Comments');
 const jwt = require('jsonwebtoken');
 const { populate } = require('../models/Comments');
+const UserModel = require('../models/User');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -70,6 +71,15 @@ router.post('/add_post', function(req, res, next) {
       } 
   });
 
+  UserModel.findById(author_id , function(err, user) {
+    if (err){
+      return console.error(`Error loading user: ${user_id}`);
+    } else {
+      user.reputation += 50;
+      user.save();
+    }
+  });
+
   let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id, author: author_id, upvotesUsers: upvotesUsers});
 
   newPost.save(function(err, pub){
@@ -85,7 +95,7 @@ router.post('/upvote_post/:pid', function(req, res, next) {
 
   PostModel.findById(req.params.pid, function (err, post) {
     if (err){
-      return console.error(`No post found with id: ${pid}`);
+      return console.error(`No post found with id: ${req.params.pid}`);
     } else {
       let token = req.body.author;
 
@@ -104,6 +114,15 @@ router.post('/upvote_post/:pid', function(req, res, next) {
       let newUps = post.upvotes;
       
       post.save();
+
+      UserModel.findById(user_id , function(err, user) {
+        if (err){
+          return console.error(`Error loading user: ${user_id}`);
+        } else {
+          user.reputation += 1;
+          user.save();
+        }
+      });
 
       return res.json(newUps);
     }
@@ -139,6 +158,15 @@ router.post("/comments/:pid", function(req, res) {
     .then(post => {
       post.comments.unshift(comment);
       return post.save();
+    }).then( () => {
+      UserModel.findById(author_id , function(err, user) {
+        if (err){
+          return console.error(`Error loading user: ${user_id}`);
+        } else {
+          user.reputation += 10;
+          user.save();
+        }
+      });
     })
     .catch(err => {
       console.log(err);
@@ -168,6 +196,15 @@ router.post("/comments/sub/:cid", function(req, res) {
     .then(parent_comment => {
       parent_comment.subcomments.unshift(comment);
       return parent_comment.save();
+    }).then( () => {
+      UserModel.findById(author_id , function(err, user) {
+        if (err){
+          return console.error(`Error loading user: ${user_id}`);
+        } else {
+          user.reputation += 10;
+          user.save();
+        }
+      });
     })
     .catch(err => {
       console.log(err);

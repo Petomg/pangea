@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let UrnModel = require('../models/Urn');
+let UserModel = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 router.get('/', function(req, res, next) {
@@ -62,6 +63,15 @@ router.post('/positive/:vid', function(req, res, next){
                 urn.save();
             }
 
+            UserModel.findById(user_id , function(err, user) {
+                if (err){
+                  return console.error(`Error loading user: ${user_id}`);
+                } else {
+                  user.reputation += 10;
+                  user.save();
+                }
+              });
+
             return res.json(urn);
         }
     });
@@ -90,6 +100,15 @@ router.post('/negative/:vid', function(req, res, next){
 
                 urn.save();
             }
+
+            UserModel.findById(user_id , function(err, user) {
+                if (err){
+                  return console.error(`Error loading user: ${user_id}`);
+                } else {
+                  user.reputation += 10;
+                  user.save();
+                }
+              });
 
             return res.json(urn);
         }
