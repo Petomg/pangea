@@ -61,11 +61,20 @@ const ButtonS = styled.button`
     width: 8em;
 `;
 
+const Error = styled.h2`
+    display: inline-block;
+    padding: 1em; 
+    color: white;
+    background-color: red;
+    border: 2px solid black;
+`;
+
 export {
     Entry,
     Input,
     Label,
     ButtonS,
     TextArea,
-    Topic
+    Topic,
+    Error
 }
