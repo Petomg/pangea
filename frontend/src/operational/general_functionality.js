@@ -26,8 +26,18 @@ export let checkUserValid = function(userid) {
 }
 
 export let isLoggedIn = function() {
-    return (cookies.get("nToken") !== undefined && cookies.get("nToken") !== null);
+    let isValid = false;
+    var token = cookies.get("nToken");
+    if(token !== undefined && token !== null){
+        var decodedToken = jwt.decode(token, { complete: true }) || {};
+        if (decodedToken.payload.user){
+            isValid = true;
+        } 
+    }
+
+    return isValid;
 }
+
 
 export let getReputation = function(rep) {
     let title = "";

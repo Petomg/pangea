@@ -75,11 +75,11 @@ const PublicationCreate = () => {
               <Input
                 name="title"
                 ref={register({
-                  required: "Required",
+                  required: "Please specify a title",
                 })}
               />
             </Entry>
-            {errors.title && errors.title.message}
+            <p className="simple_error_msg">{errors.title && errors.title.message}</p>
 
             <Entry>    
               <Label>Description</Label>
@@ -88,7 +88,7 @@ const PublicationCreate = () => {
                 ref={register}
               ></TextArea>
             </Entry>
-            {errors.description && errors.description.message}
+            <p className="simple_error_msg">{errors.description && errors.description.message}</p>
             <Entry>    
 
             {topics.map(topic => (
@@ -103,7 +103,7 @@ const PublicationCreate = () => {
               <ButtonS type="submit">Submit</ButtonS>
             }
             {!general.isLoggedIn() &&
-              <h3>Need to be logged in to create new Post!</h3>
+              <h3 className="simple_error_msg">Need to be logged in to create new Post!</h3>
             }
           </form>
           </>

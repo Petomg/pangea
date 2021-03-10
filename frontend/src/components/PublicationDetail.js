@@ -141,7 +141,7 @@ function PublicationDetail(){
                         <CommentComponent comment={comment} />
 
                         {idResponding !== comment._id &&
-                          <button onClick={(e) => toggleCommentBox(e, comment._id)}>Respond</button>
+                          <button className="small_button" onClick={(e) => toggleCommentBox(e, comment._id)}>Respond</button>
                         }
                         {idResponding == comment._id &&
                           <form onSubmit={handleSubmit(addSubComment)}>
@@ -153,12 +153,12 @@ function PublicationDetail(){
                             {errors.content && errors.content.message}
                             <input id="cid" name="cid" type="hidden" ref={register} value={comment._id}></input>
                             <div>
-                              <button type="submit">Save</button>
+                              <button className="small_button" type="submit">Save</button>
                             </div>
                           </form>
                         }
                         
-                        <button onClick={(e) => toggleResponses(e, comment._id)}>
+                        <button className="small_button" onClick={(e) => toggleResponses(e, comment._id)}>
                           {showResponses.includes(comment._id) && "Hide" || "Show"} responses
                         </button>
                         

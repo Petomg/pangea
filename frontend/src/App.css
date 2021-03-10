@@ -97,6 +97,28 @@ textarea {
   font-size: 0.9em;
 }
 
+.small_button {
+  border-radius: 2em;
+  color:  #4F89B0;
+  background-color: transparent;
+  border-color: #4F89B0;
+  outline: none;
+  font-weight: bold;
+}
+
+.small_button:hover{
+  background-color: #4F89B0;
+  color: black;
+  cursor: pointer;
+
+}
+
+.simple_error_msg {
+  color: crimson;
+
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

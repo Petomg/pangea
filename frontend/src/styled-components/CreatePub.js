@@ -63,10 +63,10 @@ const ButtonS = styled.button`
 
 const Error = styled.h2`
     display: inline-block;
-    padding: 1em; 
+    padding: 0.5em; 
     color: white;
     background-color: red;
-    border: 2px solid black;
+    border: none;
 `;
 
 export {
