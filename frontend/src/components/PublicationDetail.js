@@ -99,11 +99,11 @@ function PublicationDetail(){
             <Wrapper className="pub-detail">
                 <Title>{pubFields.title}</Title>
                 {pubFields.author !== undefined &&
-                 <p>User: <Link to={`/profile/${pubFields.author.name}`}>{pubFields.author.name}</Link></p>
+                 <Link className="user-tag" to={`/profile/${pubFields.author.name}`}>{pubFields.author.name}</Link>
                 }
-                <b>{general.formatDate(pubFields.createdAt)}</b>
+                <b className="date-tag">{general.formatDate(pubFields.createdAt)}</b>
                 <p>{pubFields.description}</p>
-                <h4>VOTES: {pubFields.upvotes}</h4>
+                <p><p className="upvotes-indicator">{pubFields.upvotes}</p></p>
                 {general.isLoggedIn() && 
                   <ButtonS primary onClick={(e) => sendUpvote(e, pubFields._id)}>VOTE</ButtonS>
                 }
@@ -207,7 +207,9 @@ const CommentComponent = (props) => {
        </>
       }
       {props.comment.author !== undefined && 
-        <b><Link to={`/profile/${props.comment.author.name}`}>{props.comment.author.name}</Link> :: </b>
+      <>
+        <Link className="user-tag-comment" to={`/profile/${props.comment.author.name}`}>{props.comment.author.name}</Link> :: 
+      </>
       }
       <i className="date-comment">{general.formatDate(props.comment.createdAt)}</i>
       <p key={props.comment._id}>{props.comment.content}</p>

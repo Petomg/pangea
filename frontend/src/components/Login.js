@@ -43,8 +43,9 @@ const LoginForm = () => {
                 required: "Please specify your username",
               })}
             />
+            <p className="simple_error_msg">{errors.email && errors.email.message}</p>
           </Entry>
-          <p className="simple_error_msg">{errors.email && errors.email.message}</p>
+          
 
           <Entry>
             <Label>Password</Label>
@@ -55,8 +56,9 @@ const LoginForm = () => {
                 required: "Please specify your password",
               })}
             />
+            <p className="simple_error_msg">{errors.password && errors.password.message}</p>
           </Entry>
-          <p className="simple_error_msg">{errors.password && errors.password.message}</p>
+          
         
           <ButtonS type="submit">Log In</ButtonS>
           <Link to="/register">Don't have an account?</Link>

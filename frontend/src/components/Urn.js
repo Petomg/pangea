@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { ButtonV, Result } from "../styled-components/UrnStyles";
+import { ButtonV, Result, ResLabel } from "../styled-components/UrnStyles";
 
 import env from "react-dotenv";
 import * as general from "../operational/general_functionality";
@@ -47,7 +47,10 @@ function Urn(props){
         return(
             <div id='urn'>
                 <Result percentage={String(get_percentage())}></Result>
-                <p>Positive: {posVotes} | Negative: {negVotes}</p>
+                <div>
+                    <ResLabel positive>{posVotes}</ResLabel>
+                    <ResLabel>{negVotes}</ResLabel>
+                </div>
                 {general.isLoggedIn() &&
                     <div>
                         <ButtonV positive closed={isClosed} onClick={(e) => sendVote(e, urnID, 'positive')}>On Favor</ButtonV>

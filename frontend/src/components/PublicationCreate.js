@@ -78,8 +78,9 @@ const PublicationCreate = () => {
                   required: "Please specify a title",
                 })}
               />
+              <p className="simple_error_msg">{errors.title && errors.title.message}</p>
             </Entry>
-            <p className="simple_error_msg">{errors.title && errors.title.message}</p>
+            
 
             <Entry>    
               <Label>Description</Label>
@@ -87,8 +88,9 @@ const PublicationCreate = () => {
                 name="description"
                 ref={register}
               ></TextArea>
+               <p className="simple_error_msg">{errors.description && errors.description.message}</p>
             </Entry>
-            <p className="simple_error_msg">{errors.description && errors.description.message}</p>
+           
             <Entry>    
 
             {topics.map(topic => (

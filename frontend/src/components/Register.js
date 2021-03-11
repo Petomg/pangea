@@ -61,8 +61,9 @@ const RegisterForm = () => {
                 validate: verif.verificaUsuario,
               })}
             />
+            <p className="simple_error_msg">{errors.name && errors.name.message}</p>
           </Entry>
-          <p className="simple_error_msg">{errors.name && errors.name.message}</p>
+          
 
           <Entry>
             <Label>Email</Label>
@@ -73,8 +74,9 @@ const RegisterForm = () => {
                 validate: verif.verificaMail,
               })}
             />
+            <p className="simple_error_msg">{errors.email && errors.email.message}</p>
           </Entry>
-          <p className="simple_error_msg">{errors.email && errors.email.message}</p>
+          
 
           <Entry>
             <Label>Password</Label>
@@ -86,8 +88,9 @@ const RegisterForm = () => {
                 validate: verif.verificaPassword,
               })}
             />
+            <p className="simple_error_msg">{errors.password && errors.password.message}</p>
           </Entry>
-          <p className="simple_error_msg">{errors.password && errors.password.message}</p>
+          
 
           <Entry>
             <Label>Confirm Password</Label>
@@ -98,8 +101,9 @@ const RegisterForm = () => {
                 required: "Please confirm your password",
               })}
             />
+            <p className="simple_error_msg">{errors.password2 && errors.password2.message}</p>
           </Entry>
-          <p className="simple_error_msg">{errors.password2 && errors.password2.message}</p>
+          
         
           <ButtonS type="submit">Sign Up</ButtonS>
         </form>

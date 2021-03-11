@@ -11,6 +11,16 @@ const ButtonV = styled.a`
     cursor: pointer;
 `;
 
+const ResLabel = styled.p`
+    display: inline-block;
+    padding: 0.4em;
+    font-weight: bold;
+    width: 4em;
+    border-radius: 2em;
+    border: 2px solid ${props => props.positive ? "#28BFB3" : "#DF9489"};
+    color: ${props => props.positive ? "#28BFB3" : "#DF9489"};
+`;
+
 const Result = styled.div`
     width:10em;
     height:3.5em;
@@ -22,7 +32,7 @@ const Result = styled.div`
     font-weight: bold;
     border-radius: 0.5em;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
-    margin-top: 3em;
+    margin-top: 1em;
     
 
     &:after {
@@ -41,5 +51,6 @@ const Result = styled.div`
 
 export {
     ButtonV,
-    Result
+    Result,
+    ResLabel
 }

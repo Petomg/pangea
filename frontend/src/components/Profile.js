@@ -146,69 +146,80 @@ const Profile = () => {
       } else {
           return (
             <>
-            <div>
+                
                 <h1>{userFields.name}</h1>
                 <h4>{general.getReputation(userFields.reputation)}</h4>
                 <h3>{userFields.email}</h3>
-                {!general.checkUserValid(userFields._id) && general.isLoggedIn() &&
-                  <ButtonS primary onClick={addAsFriend}>Add Friend +</ButtonS>
-                }
-                
+
+                <div className="needs-space">
+                  {!general.checkUserValid(userFields._id) && general.isLoggedIn() &&
+                    <ButtonS primary onClick={addAsFriend}>Add Friend +</ButtonS>
+                  }  
+                </div>
+
                 {general.checkUserValid(userFields._id) &&
                 <>
-                <CommentButton onClick={loadPendingFriends}>Show me my pendings madafaka</CommentButton>
-                {showPending && 
-                  <div>
-                  {userFields.pending_friends.map( friend => (
-                    <FriendTag key={friend._id}>
-                      <Link to={"/profile/" + friend.name} className="friend-tag">{friend.name}</Link>
-                      <img className="icon-pending" src={require('../imgs/check-icon.png')} alt="Accept" onClick={(e) => acceptFriend(e, friend._id)}></img>
-                      <img className="icon-pending" src={require('../imgs/decline-icon1.png')} alt="Decline" onClick={(e) => declineFriend(e, friend._id)}></img>
-                    </FriendTag>
-                  ))}
+
+                <div>
+                  <CommentButton onClick={loadPendingFriends}>Show me my pendings madafaka</CommentButton>
+                  {showPending && 
+                    <div>
+                    {userFields.pending_friends.map( friend => (
+                      <FriendTag key={friend._id}>
+                        <Link to={"/profile/" + friend.name} className="friend-tag">{friend.name}</Link>
+                        <img className="icon-pending" src={require('../imgs/check-icon.png')} alt="Accept" onClick={(e) => acceptFriend(e, friend._id)}></img>
+                        <img className="icon-pending" src={require('../imgs/decline-icon1.png')} alt="Decline" onClick={(e) => declineFriend(e, friend._id)}></img>
+                      </FriendTag>
+                    ))}
                   </div>
-                }
+                  }
+                </div>
+
                 </>
                 }
-
-                <CommentButton onClick={loadFriends}>Show me my friends madafaka</CommentButton>
-                {showFriends && 
-                  <div>
-                  {userFields.friends.map( friend => (
-                    <FriendTag key={friend._id}>
-                      <Link to={"/profile/" + friend.name} className="friend-tag">{friend.name}</Link>
-                      {general.checkUserValid(userFields._id) &&
-                        <ButtonS onClick={(e) => unFriend(e, friend._id)}>Un-Friend</ButtonS>
-                      }
-                    </FriendTag>
-                  ))}
-                  </div>
-                }
-            
-              
-                <CommentButton onClick={loadPublications}>Show me my publications madafaka</CommentButton>
-            </div>
-            {userPubs !== [] && showPubs &&
-                <Wrapper id="pub-list">
-                    {userPubs.map( pub => (
-                        <Card key={pub._id}>
-                        <Title>{pub.title}</Title> 
-                        <p>{pub.description}</p>
-                        <h4>VOTES: {pub.upvotes}</h4>
-                        <TopicList id="topics-individual">
-                        {pub.topics.map(topic => (
-                            <Topic key={topic}>{topic}</Topic>
-                        ))}
-                        </TopicList>
+                
+                <div>
+                  <CommentButton onClick={loadFriends}>Show me my friends madafaka</CommentButton>
+                  {showFriends && 
+                    <div>
+                    {userFields.friends.map( friend => (
+                      <FriendTag key={friend._id}>
+                        <Link to={"/profile/" + friend.name} className="friend-tag">{friend.name}</Link>
                         {general.checkUserValid(userFields._id) &&
-                          <ButtonS onClick={(e) => deletePost(e, pub._id)}>DELETE</ButtonS>
+                          <ButtonS onClick={(e) => unFriend(e, friend._id)}>Un-Friend</ButtonS>
                         }
-                        <ButtonS primary href={"/" + pub._id}>Detail</ButtonS>
-                    </Card>
+                      </FriendTag>
                     ))}
+                    </div>
+                  }
+                </div>
+                
+            
+                <div>
+                  <CommentButton onClick={loadPublications}>Show me my publications madafaka</CommentButton>
+              
+                  {userPubs !== [] && showPubs &&
+                      <Wrapper id="pub-list">
+                          {userPubs.map( pub => (
+                              <Card key={pub._id}>
+                              <Title>{pub.title}</Title> 
+                              <p>{pub.description}</p>
+                              <h4>VOTES: {pub.upvotes}</h4>
+                              <TopicList id="topics-individual">
+                              {pub.topics.map(topic => (
+                                  <Topic key={topic}>{topic}</Topic>
+                              ))}
+                              </TopicList>
+                              {general.checkUserValid(userFields._id) &&
+                                <ButtonS onClick={(e) => deletePost(e, pub._id)}>DELETE</ButtonS>
+                              }
+                              <ButtonS primary href={"/" + pub._id}>Detail</ButtonS>
+                          </Card>
+                          ))}
 
-                </Wrapper>
-            }
+                      </Wrapper>
+                  }
+                </div>
 
               <ImageUploader
                 withIcon={true}

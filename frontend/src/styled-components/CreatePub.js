@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 
 let Entry = styled.div`
-    padding: 2em;
+    padding: 1.5em;
     display: inline-block;
     width: 80%;
-    margin-top: 2em;
     content-align: center;
 `;
 

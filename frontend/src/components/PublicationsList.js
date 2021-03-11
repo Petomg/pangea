@@ -41,7 +41,7 @@ function PublicationList(){
           <Card key={pub._id}>
             <Title>{pub.title}</Title> 
             <p>{pub.description}</p>
-            <h4>VOTES: {pub.upvotes}</h4>
+            <h4 className="upvotes-indicator">{pub.upvotes}</h4>
             <TopicList id="topics-individual">
               {pub.topics.map(topic => (
                 <Topic key={topic}>{topic}</Topic>

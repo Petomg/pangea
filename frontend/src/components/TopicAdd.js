@@ -29,11 +29,12 @@ function TopicAdd () {
                     <Input
                         name="topicname"
                         ref={register({
-                            required: "Required",
+                            required: "Please specify a topic",
                         })}
                     />
+                    <p className="simple_error_msg">{errors.topicname && errors.topicname.message}</p>
                 </Entry>
-                {errors.topicname && errors.topicname.message}
+                
                 
                 <ButtonS type="submit">Submit</ButtonS>
 
