@@ -29,9 +29,11 @@ function App() {
   let uid = null;
   let uname = null;
   if (userToken !== undefined && userToken !== null) {
-    let decodedToken = jwt.decode(userToken, { complete: true }) || {};  
-    uid = decodedToken.payload.user._id;
-    uname = decodedToken.payload.user.name;
+    let decodedToken = jwt.decode(userToken, { complete: true }) || {}; 
+    if (decodedToken.payload !== undefined){
+      uid = decodedToken.payload.user._id;
+      uname = decodedToken.payload.user.name;
+    }
   } 
 
   return (

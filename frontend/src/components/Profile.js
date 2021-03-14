@@ -10,6 +10,7 @@ import { FriendTag } from "../styled-components/ProfileStyles";
 import * as general from "../operational/general_functionality";
 
 import Cookies from 'universal-cookie';
+
 const cookies = new Cookies();
 
 const Profile = () => {
@@ -26,7 +27,7 @@ const Profile = () => {
     
     useEffect(() => {
            
-            axios.get(`${env.API_URL}/user/profile/${uname}`)
+            axios.get(`${env.API_URL}/user/profile/${uname}`, {withCredentials: true})
               .then(
                 (result) => {
                   setIsLoaded(true);
@@ -66,9 +67,7 @@ const Profile = () => {
       axios({
         method: "post",
         url:`${env.API_URL}/user/add_friend/${userFields._id}`,
-        data: {
-          friend_token: cookies.get("nToken")
-        }
+        withCredentials: true
       })
     }
 
@@ -79,7 +78,8 @@ const Profile = () => {
         url:`${env.API_URL}/user/confirm_friend/${userFields._id}`,
         data: {
           friend_id: fid
-        }
+        },
+        withCredentials: true
       }).then ( (result) => {
         setUserFields(result.data);
       })
@@ -92,7 +92,8 @@ const Profile = () => {
         url:`${env.API_URL}/user/decline_friend/${userFields._id}`,
         data: {
           friend_id: fid
-        }
+        },
+        withCredentials: true
       }).then( (result) => {
         setUserFields(result.data);
       });
@@ -105,16 +106,21 @@ const Profile = () => {
         url:`${env.API_URL}/user/delete_friend/${userFields._id}`,
         data: {
           friend_id: fid
-        }
+        },
+        withCredentials: true
       }).then ( (result) => {
           setUserFields(result.data);
       })
     }
 
-    function deletePost(event, id){
+    function deletePost(event, id, authorid){
         axios({
           method: 'post',
           url: `${env.API_URL}/delete_post/${id}`,
+          withCredentials: true,
+          data: {
+            author_id: authorid,
+          }
         }).then(
             //Redirect to home
             window.location.href = "/"
@@ -211,7 +217,7 @@ const Profile = () => {
                               ))}
                               </TopicList>
                               {general.checkUserValid(userFields._id) &&
-                                <ButtonS onClick={(e) => deletePost(e, pub._id)}>DELETE</ButtonS>
+                                <ButtonS onClick={(e) => deletePost(e, pub._id, pub.author)}>DELETE</ButtonS>
                               }
                               <ButtonS primary href={"/" + pub._id}>Detail</ButtonS>
                           </Card>

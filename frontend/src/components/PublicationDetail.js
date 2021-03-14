@@ -31,8 +31,8 @@ function PublicationDetail(){
         axios({
           method: 'post',
           url: `${env.API_URL}/comments/${id}`,
-          data: {author: cookies.get("nToken"),
-                values}
+          data: values,
+          withCredentials: true
         }).then(
           //Redirect to home
           //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
@@ -44,10 +44,8 @@ function PublicationDetail(){
       axios({
         method: 'post',
         url: `${env.API_URL}/comments/sub/${values.cid}`,
-        data: {
-              author: cookies.get("nToken"),
-              content: values.content
-              }
+        data: {content: values.content},
+        withCredentials: true,
       }).then(
         //Redirect to home
         //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
@@ -184,9 +182,7 @@ function PublicationDetail(){
     axios({
       method: 'post',
       url: `${env.API_URL}/upvote_post/${id}`,
-      data: {
-        author: cookies.get("nToken")
-      }
+      withCredentials: true
 
     }).then( (res) => {
       setPubFields({...pubFields, upvotes: res.data});

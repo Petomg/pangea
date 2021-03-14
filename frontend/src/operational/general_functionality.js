@@ -17,7 +17,7 @@ export let checkUserValid = function(userid) {
     var token = cookies.get("nToken");
     if(token !== undefined && token !== null){
         var decodedToken = jwt.decode(token, { complete: true }) || {};
-        if (decodedToken.payload.user._id === userid){
+        if (decodedToken.payload !== undefined && decodedToken.payload.user._id === userid){
             isValid = true;
         } 
     }
@@ -30,7 +30,7 @@ export let isLoggedIn = function() {
     var token = cookies.get("nToken");
     if(token !== undefined && token !== null){
         var decodedToken = jwt.decode(token, { complete: true }) || {};
-        if (decodedToken.payload.user){
+        if (decodedToken.payload && decodedToken.payload.user){
             isValid = true;
         } 
     }

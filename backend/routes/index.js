@@ -46,16 +46,12 @@ router.get('/get_posts/:pid', function(req,res,next){
 
 router.post('/add_post', function(req, res, next) {
 
-  console.log("agregando post");
-  console.log(req.headers);
-  console.log(req.cookies);
-
-  let title = req.body.values.title;
-  let description = req.body.values.description;
-  let topics = req.body.values.topics;
+  let title = req.body.title;
+  let description = req.body.description;
+  let topics = req.body.topics;
   let upvotes = 0;
   let upvotesUsers = [];
-  let token = req.body.author;
+  let token = req.cookies["nToken"];
 
   let decodedToken = jwt.decode(token, { complete: true }) || {};
   let author_id = decodedToken.payload.user._id;
@@ -66,6 +62,14 @@ router.post('/add_post', function(req, res, next) {
   let negUsers = [];
   let isClosed = false;
 
+  UserModel.findById(author_id , function(err, user) {
+    if (err){
+      return console.error(`Not a valid user`);
+    } else {
+      user.reputation += 50;
+      user.save();
+    }
+  });
 
   let newUrn = new UrnModel({posVotes, posUsers, negVotes, negUsers, isClosed});
 
@@ -73,15 +77,6 @@ router.post('/add_post', function(req, res, next) {
       if(err) {
           return console.error("Error while creating urn");
       } 
-  });
-
-  UserModel.findById(author_id , function(err, user) {
-    if (err){
-      return console.error(`Error loading user: ${user_id}`);
-    } else {
-      user.reputation += 50;
-      user.save();
-    }
   });
 
   let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id, author: author_id, upvotesUsers: upvotesUsers});
@@ -101,10 +96,24 @@ router.post('/upvote_post/:pid', function(req, res, next) {
     if (err){
       return console.error(`No post found with id: ${req.params.pid}`);
     } else {
-      let token = req.body.author;
+      let token = req.cookies["nToken"];
 
       let decodedToken = jwt.decode(token, { complete: true }) || {};
-      let user_id = decodedToken.payload.user._id;
+      let user_id = 0;
+      if (decodedToken.payload && decodedToken.payload.user){
+        user_id = decodedToken.payload.user._id;
+      } else {
+        console.error("Invalid user");
+      }
+
+      UserModel.findById(user_id , function(err, user) {
+        if (err){
+          return console.error(`Invalid User`);
+        } else {
+          user.reputation += 1;
+          user.save();
+        }
+      });
 
       if(post.upvotesUsers.includes(user_id)){
           post.upvotesUsers.splice(post.upvotesUsers.indexOf(user_id), 1);
@@ -119,15 +128,6 @@ router.post('/upvote_post/:pid', function(req, res, next) {
       
       post.save();
 
-      UserModel.findById(user_id , function(err, user) {
-        if (err){
-          return console.error(`Error loading user: ${user_id}`);
-        } else {
-          user.reputation += 1;
-          user.save();
-        }
-      });
-
       return res.json(newUps);
     }
   });
@@ -135,6 +135,25 @@ router.post('/upvote_post/:pid', function(req, res, next) {
 });
 
 router.post('/delete_post/:pid', function(req, res, next) {
+  let token = req.cookies["nToken"];
+  let author_id = req.body.author_id;
+  console.log(req.body);
+
+  let decodedToken = jwt.decode(token, { complete: true }) || {};
+  let user_id = 0;
+
+  if (decodedToken.payload && decodedToken.payload.user){
+    user_id = decodedToken.payload.user._id;
+  } else {
+    return console.error("Invalid user");
+  }
+
+  console.log(user_id);
+  console.log(author_id);
+
+  if (user_id !== author_id){
+    return console.error("Invalid operation for current user");
+  }
 
   PostModel.deleteOne({ _id: req.params.pid }, function (err) {
       if(err) {
@@ -145,11 +164,25 @@ router.post('/delete_post/:pid', function(req, res, next) {
 
 router.post("/comments/:pid", function(req, res) {
   // INSTANTIATE INSTANCE OF MODEL
-  let content = req.body.values.content;
-  let token = req.body.author;
+  let content = req.body.content;
+  let token = req.cookies["nToken"];
 
   let decodedToken = jwt.decode(token, { complete: true }) || {};
-  let author_id = decodedToken.payload.user._id;
+  let author_id = 0;
+  if (decodedToken.payload){
+    author_id = decodedToken.payload.user._id;
+  } else {
+    return console.error("Invalid user token");
+  }
+
+  UserModel.findById(author_id , function(err, user) {
+    if (err){
+      return console.error(`Error loading user: ${user_id}`);
+    } else {
+      user.reputation += 10;
+      user.save();
+    }
+  });
 
   const comment = new CommentsModel({content: content, author: author_id});
 
@@ -162,15 +195,6 @@ router.post("/comments/:pid", function(req, res) {
     .then(post => {
       post.comments.unshift(comment);
       return post.save();
-    }).then( () => {
-      UserModel.findById(author_id , function(err, user) {
-        if (err){
-          return console.error(`Error loading user: ${user_id}`);
-        } else {
-          user.reputation += 10;
-          user.save();
-        }
-      });
     })
     .catch(err => {
       console.log(err);
@@ -180,17 +204,29 @@ router.post("/comments/:pid", function(req, res) {
 router.post("/comments/sub/:cid", function(req, res) {
   // INSTANTIATE INSTANCE OF MODEL
   let content = req.body.content;
-  let token = req.body.author;
+  let token = req.cookies["nToken"];
 
   let decodedToken = jwt.decode(token, { complete: true }) || {};
-  let author_id = decodedToken.payload.user._id;
+  let author_id = 0;
+  if (decodedToken.payload){
+    author_id = decodedToken.payload.user._id;
+  } else {
+    return console.error("Invalid user token");
+  }
+
+  UserModel.findById(author_id , function(err, user) {
+    if (err){
+      return console.error(`Invalid user`);
+    } else {
+      user.reputation += 10;
+      user.save();
+    }
+  });
 
   let subcomments = []
 
-
   const comment = new CommentsModel({content: content, author: author_id, subcomments: subcomments});
 
-  console.log(req.params.cid);
   // SAVE INSTANCE OF Comment MODEL TO DB
   comment
     .save()
@@ -200,15 +236,6 @@ router.post("/comments/sub/:cid", function(req, res) {
     .then(parent_comment => {
       parent_comment.subcomments.unshift(comment);
       return parent_comment.save();
-    }).then( () => {
-      UserModel.findById(author_id , function(err, user) {
-        if (err){
-          return console.error(`Error loading user: ${user_id}`);
-        } else {
-          user.reputation += 10;
-          user.save();
-        }
-      });
     })
     .catch(err => {
       console.log(err);
