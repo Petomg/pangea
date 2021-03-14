@@ -37,17 +37,18 @@ const PublicationCreate = () => {
         method: 'post',
         url: `${env.API_URL}/add_post`,
         data: {author: cookies.get("nToken"),
-              values}
+              values},
+        withCredentials: true,
       }).then(
         //Redirect to home
         //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
-        window.location.href = "/"
+        //window.location.href = "/"
       );
     }
 
   
     useEffect(() => {
-      axios.get(`${env.API_URL}/topics`)
+      axios.get(`${env.API_URL}/topics`,{withCredentials: true})
         .then(
           (result) => {
 

@@ -46,6 +46,10 @@ router.get('/get_posts/:pid', function(req,res,next){
 
 router.post('/add_post', function(req, res, next) {
 
+  console.log("agregando post");
+  console.log(req.headers);
+  console.log(req.cookies);
+
   let title = req.body.values.title;
   let description = req.body.values.description;
   let topics = req.body.values.topics;

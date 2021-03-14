@@ -23,6 +23,8 @@ let imageRouter = require('./routes/image');
 
 var app = express();
 app.use(cors({
+  credentials: true,
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
   origin: 'http://localhost:3000'
 }));
 app.use(helmet());

@@ -14,25 +14,6 @@ const RegisterForm = () => {
     let [error, setError] = useState("");
 
     const onSubmit = values => {
-        let isValid = true;
-        if (verif.verificaMail(values.email) !== true){
-          setError(verif.verificaMail(values.email));
-          isValid = false;
-        } 
-        else if (verif.verificaUsuario(values.name) !== true){
-          setError(verif.verificaUsuario(values.name))
-          isValid = false
-        }
-        else if (!verif.verificaPassword(values.password) !== true){
-          setError(verif.verificaPassword(values.password));
-          isValid = false;
-        }
-        else if(values.password !== values.password2){
-          setError("Password and confirmation don't match");
-          isValid = false;
-        }
-        
-        if (isValid) {
           axios({
               method: 'post',
               url: `${env.API_URL}/register`,
@@ -42,7 +23,7 @@ const RegisterForm = () => {
               //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
               window.location.href = "/"
             );
-        }
+        
     }
 
     return (
