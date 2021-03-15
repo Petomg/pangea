@@ -4,7 +4,6 @@ let PostModel = require('../models/Post');
 let UrnModel = require('../models/Urn');
 let CommentsModel = require('../models/Comments');
 const jwt = require('jsonwebtoken');
-const { populate } = require('../models/Comments');
 const UserModel = require('../models/User');
 
 /* GET home page. */
@@ -103,7 +102,7 @@ router.post('/upvote_post/:pid', function(req, res, next) {
       if (decodedToken.payload && decodedToken.payload.user){
         user_id = decodedToken.payload.user._id;
       } else {
-        console.error("Invalid user");
+        return console.error("Invalid user");
       }
 
       UserModel.findById(user_id , function(err, user) {
@@ -137,7 +136,7 @@ router.post('/upvote_post/:pid', function(req, res, next) {
 router.post('/delete_post/:pid', function(req, res, next) {
   let token = req.cookies["nToken"];
   let author_id = req.body.author_id;
-  console.log(req.body);
+  
 
   let decodedToken = jwt.decode(token, { complete: true }) || {};
   let user_id = 0;
@@ -147,9 +146,6 @@ router.post('/delete_post/:pid', function(req, res, next) {
   } else {
     return console.error("Invalid user");
   }
-
-  console.log(user_id);
-  console.log(author_id);
 
   if (user_id !== author_id){
     return console.error("Invalid operation for current user");
@@ -184,7 +180,11 @@ router.post("/comments/:pid", function(req, res) {
     }
   });
 
-  const comment = new CommentsModel({content: content, author: author_id});
+  let subcomments = [];
+  let upvotes = 0;
+  let upvotesUsers = [];
+
+  const comment = new CommentsModel({content: content, author: author_id, subcomments: subcomments, upvotes: upvotes, upvotesUsers: upvotesUsers});
 
   // SAVE INSTANCE OF Comment MODEL TO DB
   comment
@@ -192,9 +192,11 @@ router.post("/comments/:pid", function(req, res) {
     .then(comment => {
       return PostModel.findById(req.params.pid);
     })
-    .then(post => {
+    .then(async (post) => {
       post.comments.unshift(comment);
-      return post.save();
+      post.save();
+      await comment.populate("author").execPopulate();
+      return res.json(comment);
     })
     .catch(err => {
       console.log(err);
@@ -224,8 +226,10 @@ router.post("/comments/sub/:cid", function(req, res) {
   });
 
   let subcomments = []
+  let upvotes = 0;
+  let upvotesUsers = [];
 
-  const comment = new CommentsModel({content: content, author: author_id, subcomments: subcomments});
+  const comment = new CommentsModel({content: content, author: author_id, subcomments: subcomments, upvotes: upvotes, upvotesUsers: upvotesUsers});
 
   // SAVE INSTANCE OF Comment MODEL TO DB
   comment
@@ -240,6 +244,48 @@ router.post("/comments/sub/:cid", function(req, res) {
     .catch(err => {
       console.log(err);
     });
+});
+
+router.post("/comments/upvote/:cid", function(req, res){
+  CommentsModel.findById(req.params.cid, function (err, comment) {
+    if (err){
+      return console.error(`No comment found with id: ${req.params.cid}`);
+    } else {
+      let token = req.cookies["nToken"];
+
+      let decodedToken = jwt.decode(token, { complete: true }) || {};
+      let user_id = 0;
+      if (decodedToken.payload && decodedToken.payload.user){
+        user_id = decodedToken.payload.user._id;
+      } else {
+        return console.error("Invalid user");
+      }
+
+      UserModel.findById(user_id , function(err, user) {
+        if (err){
+          return console.error(`Invalid User`);
+        } else {
+          user.reputation += 1;
+          user.save();
+        }
+      });
+
+      if(comment.upvotesUsers.includes(user_id)){
+          comment.upvotesUsers.splice(comment.upvotesUsers.indexOf(user_id), 1);
+          comment.upvotes = comment.upvotes - 1;
+      } else {
+          comment.upvotesUsers.push(user_id);
+          comment.upvotes = comment.upvotes + 1;
+      }
+
+      //post.upvotes = post.upvotes + 1;
+      let newUps = comment.upvotes;
+      
+      comment.save();
+
+      return res.json(newUps);
+    }
+  });
 });
 
 module.exports = router;

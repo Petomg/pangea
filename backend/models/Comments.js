@@ -12,7 +12,14 @@ const CommentSchema = new mongoose.Schema({
         required: true
     },
 
-    subcomments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comments'}]
+    subcomments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comments'}],
+
+    upvotes: {
+        type: Number,
+        min: 0
+    },
+
+    upvotesUsers : [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
 
 },{
     timestamps: true

@@ -24,8 +24,59 @@ function PublicationDetail(){
     const [comments, setComments] = useState([]);
     const [idResponding, setIdResponding] = useState("");
     const [showResponses, setShowResponses] = useState([]);
+
+     //Supuestamente esto no es lo mejor
+     const [, updateState] = React.useState();
+     const forceUpdate = React.useCallback(() => updateState({}), []);
+
+    const CommentComponent = (props) => {
+
+      return (
+        <CommentIndiv>
+          {props.parent && 
+          <>
+          <p className="addressing">@{props.parent}</p><b> :: </b>
+          </>
+          }
+          {props.comment.author !== undefined && 
+          <>
+            <Link className="user-tag-comment" to={`/profile/${props.comment.author.name}`}>{props.comment.author.name}</Link> :: 
+          </>
+          }
+          <i className="date-comment">{general.formatDate(props.comment.createdAt)}</i>
+          <p key={props.comment._id}>{props.comment.content}</p>
+          <p>{props.comment.upvotes}</p>
+          <button onClick={(e) => sendCommentUpvote(e, props.comment)}>UP</button>
+        </CommentIndiv>
+      )
+    
+      function sendCommentUpvote(event, comment){
+        event.preventDefault();
+        axios({
+          method: 'post',
+          url: `${env.API_URL}/comments/upvote/${comment._id}`,
+          withCredentials: true
+      
+        }).then( (res) => {
+          comment.upvotes = res.data;
+          forceUpdate();
+        });
+      }
+    }
   
     let {id} = useParams();
+
+      // Funcion que maneja el upvote.
+    const sendUpvote = (event, id) => {
+      axios({
+        method: 'post',
+        url: `${env.API_URL}/upvote_post/${id}`,
+        withCredentials: true
+
+      }).then( (res) => {
+        setPubFields({...pubFields, upvotes: res.data});
+      });
+    }
     
     const addComment = values => {
         axios({
@@ -33,23 +84,29 @@ function PublicationDetail(){
           url: `${env.API_URL}/comments/${id}`,
           data: values,
           withCredentials: true
-        }).then(
+        }).then( (newComment) => {
           //Redirect to home
           //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
-          window.location.href = `/${id}`
+          console.log(newComment);
+          setComments([newComment.data, ...comments]);
+        }
         );
     }
 
     const addSubComment = values => {
+      values.comment = JSON.parse(values.comment);
+      console.log(values);
+      console.log(values.comment._id);
       axios({
         method: 'post',
-        url: `${env.API_URL}/comments/sub/${values.cid}`,
+        url: `${env.API_URL}/comments/sub/${values.comment._id}`,
         data: {content: values.content},
         withCredentials: true,
       }).then(
         //Redirect to home
         //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
-        window.location.href = `/${id}`
+        //window.location.href = `/${id}`
+        forceUpdate()
       );
     }
 
@@ -149,7 +206,7 @@ function PublicationDetail(){
                               placeholder="Your comment...">
                             </CommentBox>
                             {errors.content && errors.content.message}
-                            <input id="cid" name="cid" type="hidden" ref={register} value={comment._id}></input>
+                            <input id="comment" name="comment" type="hidden" ref={register} value={JSON.stringify(comment)}></input>
                             <div>
                               <button className="small_button" type="submit">Save</button>
                             </div>
@@ -175,42 +232,8 @@ function PublicationDetail(){
             </Wrapper>
         );
     }
-
-
-  // Funcion que maneja el upvote.
-  function sendUpvote(event, id){
-    axios({
-      method: 'post',
-      url: `${env.API_URL}/upvote_post/${id}`,
-      withCredentials: true
-
-    }).then( (res) => {
-      setPubFields({...pubFields, upvotes: res.data});
-    });
-
-    
-    
-  }
-
 }
 
-const CommentComponent = (props) => {
-  return (
-    <CommentIndiv>
-      {props.parent && 
-       <>
-       <p className="addressing">@{props.parent}</p><b> :: </b>
-       </>
-      }
-      {props.comment.author !== undefined && 
-      <>
-        <Link className="user-tag-comment" to={`/profile/${props.comment.author.name}`}>{props.comment.author.name}</Link> :: 
-      </>
-      }
-      <i className="date-comment">{general.formatDate(props.comment.createdAt)}</i>
-      <p key={props.comment._id}>{props.comment.content}</p>
-    </CommentIndiv>
-  )
-}
+
 
 export default PublicationDetail;
