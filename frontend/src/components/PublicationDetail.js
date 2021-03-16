@@ -12,6 +12,7 @@ import Urn from "./Urn";
 
 
 import Cookies from 'universal-cookie';
+
 const cookies = new Cookies();
 
 
@@ -24,10 +25,6 @@ function PublicationDetail(){
     const [comments, setComments] = useState([]);
     const [idResponding, setIdResponding] = useState("");
     const [showResponses, setShowResponses] = useState([]);
-
-    //Supuestamente esto no es lo mejor
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
 
     const CommentComponent = (props) => {
 
@@ -62,7 +59,8 @@ function PublicationDetail(){
       
         }).then( (res) => {
           comment.upvotes = res.data;
-          forceUpdate();
+          let newComments = [...comments]
+          setComments(newComments);
         });
       }
     }
@@ -109,7 +107,8 @@ function PublicationDetail(){
             com.subcomments.unshift(newComment.data);
           }
         }
-        forceUpdate();
+        let newComments = [...comments]
+        setComments(newComments);
       }
       );
     }

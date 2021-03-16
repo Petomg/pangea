@@ -237,9 +237,11 @@ router.post("/comments/sub/:cid", function(req, res) {
     .then(comment => {
       return CommentsModel.findById(req.params.cid);
     })
-    .then(parent_comment => {
+    .then(async (parent_comment) => {
       parent_comment.subcomments.unshift(comment);
-      return parent_comment.save();
+      parent_comment.save();
+      await comment.populate("author").execPopulate();
+      return res.json(comment);
     })
     .catch(err => {
       console.log(err);
