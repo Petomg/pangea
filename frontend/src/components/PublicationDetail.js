@@ -25,9 +25,9 @@ function PublicationDetail(){
     const [idResponding, setIdResponding] = useState("");
     const [showResponses, setShowResponses] = useState([]);
 
-     //Supuestamente esto no es lo mejor
-     const [, updateState] = React.useState();
-     const forceUpdate = React.useCallback(() => updateState({}), []);
+    //Supuestamente esto no es lo mejor
+    const [, updateState] = React.useState();
+    const forceUpdate = React.useCallback(() => updateState({}), []);
 
     const CommentComponent = (props) => {
 
@@ -44,9 +44,12 @@ function PublicationDetail(){
           </>
           }
           <i className="date-comment">{general.formatDate(props.comment.createdAt)}</i>
+         
           <p key={props.comment._id}>{props.comment.content}</p>
-          <p>{props.comment.upvotes}</p>
-          <button onClick={(e) => sendCommentUpvote(e, props.comment)}>UP</button>
+          <div className="up-comment">
+            <p className="up-comment-num">{props.comment.upvotes}</p>
+            <button className="up-comment-button" onClick={(e) => sendCommentUpvote(e, props.comment)}>UP</button>
+          </div>
         </CommentIndiv>
       )
     
@@ -95,18 +98,19 @@ function PublicationDetail(){
 
     const addSubComment = values => {
       values.comment = JSON.parse(values.comment);
-      console.log(values);
-      console.log(values.comment._id);
       axios({
         method: 'post',
         url: `${env.API_URL}/comments/sub/${values.comment._id}`,
         data: {content: values.content},
-        withCredentials: true,
-      }).then(
-        //Redirect to home
-        //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
-        //window.location.href = `/${id}`
-        forceUpdate()
+        withCredentials: true
+      }).then( (newComment) => {
+        for (let com of comments){
+          if (com._id === values.comment._id){
+            com.subcomments.unshift(newComment.data);
+          }
+        }
+        forceUpdate();
+      }
       );
     }
 

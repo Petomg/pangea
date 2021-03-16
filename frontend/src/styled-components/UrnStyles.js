@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const ButtonV = styled.a`
     text-decoration:none;
     padding: 0.7em;
-    background-color: ${props => props.positive ? "#28BF36" : "#C9401A"};
+    background-color: ${props => props.positive ? "#4DB6AC" : "#EF5350"};
     color: white;
     ${props => props.closed ? "pointer-events: none;" : ""}
     cursor: ${props => props.closed ? "default" : "pointer"};

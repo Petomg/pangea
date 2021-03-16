@@ -164,6 +164,32 @@ textarea {
   margin: 0;
 }
 
+.up-comment {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.up-comment-num {
+  display: inline-block;
+  color: #4F89B0;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  margin-right: 0.5em;
+
+}
+
+.up-comment-button {
+  display: inline-block;
+  color: white;
+  border-radius: 2em;
+  background-color: #4F89B0;
+  padding: 0;
+  margin: 0;
+
+}
+
 
 @keyframes App-logo-spin {
   from {
