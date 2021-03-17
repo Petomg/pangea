@@ -15,11 +15,24 @@ router.get('/', function(req, res, next) {
 router.get('/get_posts', function(req, res, next) {
   PostModel.find(function(err, posts){
     if(err) {
-        return console.error("Error in get db operation");
+        return console.error("Error in get DB operation");
     } else {
         res.json(posts);
     }
   })
+});
+
+router.get('/posts_by_topics', function(req,res,next) {
+  PostModel.find({topics: { $in: req.query.topics }}, function(err, posts) {
+    if (err) {
+      return console.error("Error in get DB operation");
+    }
+    else {
+
+      res.json(posts);
+    }
+  });
+    
 });
 
 

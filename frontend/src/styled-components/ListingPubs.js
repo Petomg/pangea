@@ -8,7 +8,7 @@ const Title = styled.h1`
 
 // Create a Wrapper component that'll render a <section> tag with some styles
 const Wrapper = styled.div`
-  padding: 4em;
+  padding: 1em;
   align-items: center;
   justify-content: center;
 `;

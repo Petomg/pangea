@@ -1,3 +1,5 @@
+
+
 .App {
   text-align: center;
 }
@@ -153,6 +155,10 @@ textarea {
   padding: 2em;
 }
 
+.to-close-to-top {
+  margin-top: 2em;
+}
+
 .upvotes-indicator {
   display: inline-block;
   padding: 0.4em;
@@ -189,7 +195,6 @@ textarea {
   margin: 0;
 
 }
-
 
 @keyframes App-logo-spin {
   from {
