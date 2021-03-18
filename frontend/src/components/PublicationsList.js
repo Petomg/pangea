@@ -34,8 +34,56 @@ function PublicationList(){
         topics: values.topics
       }
     }).then( (pubs) => {
-        setPubs(pubs.data);
+        let publics = pubs.data.reverse();
+        setPubs(publics);
     });
+  }
+
+  const orderByUpvotes = () => {
+    function compareUpvotes( a, b ) {
+      if ( a.upvotes < b.upvotes ){
+        return 1;
+      }
+      if ( a.upvotes > b.upvotes ){
+        return -1;
+      }
+      return 0;
+    }
+
+    let newOrder = [...pubs];
+
+    newOrder.sort(compareUpvotes);
+
+    setPubs(newOrder);
+
+  }
+
+  const orderByNewer = () => {
+    function compareDates( a, b ) {
+      let date1 = new Date(a.createdAt);
+      let date2 = new Date(b.createdAt);
+      if ( date1 < date2 ){
+        return 1;
+      }
+      if ( date1 > date2 ){
+        return -1;
+      }
+      return 0;
+    }
+
+    let newOrder = [...pubs];
+
+    newOrder.sort(compareDates);
+
+    setPubs(newOrder);
+
+  }
+
+  const selectAll = () => {
+      let checkboxes = document.getElementsByClassName('topic-check');
+      let selectAll = document.getElementsByName('selectAll')[0];
+      for(let checkbox of checkboxes)
+        checkbox.checked = selectAll.checked;
   }
 
   useEffect(() => {
@@ -43,11 +91,12 @@ function PublicationList(){
       .then(
         (result) => {
           setIsLoaded(true);
-          setPubs(result.data);
+          let reversePubs = result.data.reverse();
+          setPubs(reversePubs);
           axios.get(`${env.API_URL}/topics`)
           .then(
             (res) => {
-              console.log(res.data);
+              
               setTopics(res.data);
             }
           )
@@ -73,6 +122,8 @@ function PublicationList(){
         <ButtonS primary onClick={() => setToggleTopics(!toggleTopics)}>+ Filter by Topics</ButtonS>
         {toggleTopics && 
           <form onSubmit={handleSubmit(onSubmit)} className="needs-space">
+            <label className="selectall-label" for="selectAll">Whatever</label>
+            <input type="checkbox" name="selectAll" onClick={selectAll}/>
             {topics.map(topic => (
                       <div key={topic._id} class="topic-select">
                         <Topic for={"t_".concat(topic.name.toLowerCase())} className="topic-label">{topic.name} </Topic>
@@ -82,6 +133,8 @@ function PublicationList(){
             <button type="submit">Search</button>
           </form>
         }
+        <ButtonS primary onClick={orderByUpvotes}>Top Debates</ButtonS>
+        <ButtonS primary onClick={orderByNewer}>Newer Debates</ButtonS>
       </div>
 
       <Wrapper id="pub-list">
