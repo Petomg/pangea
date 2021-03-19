@@ -25,6 +25,7 @@ function PublicationDetail(){
     const [comments, setComments] = useState([]);
     const [idResponding, setIdResponding] = useState("");
     const [showResponses, setShowResponses] = useState([]);
+    const [orderedby, setOrderedby] = useState("New Comments");
 
     const CommentComponent = (props) => {
 
@@ -45,7 +46,9 @@ function PublicationDetail(){
           <p key={props.comment._id}>{props.comment.content}</p>
           <div className="up-comment">
             <p className="up-comment-num">{props.comment.upvotes}</p>
-            <button className="up-comment-button" onClick={(e) => sendCommentUpvote(e, props.comment)}>UP</button>
+            {general.isLoggedIn() && 
+              <button className="up-comment-button" onClick={(e) => sendCommentUpvote(e, props.comment)}>UP</button>
+            }
           </div>
         </CommentIndiv>
       )
@@ -64,7 +67,52 @@ function PublicationDetail(){
         });
       }
     }
+
+    const orderByUpvotes = () => {
+      function compareUpvotes( a, b ) {
+        if ( a.upvotes < b.upvotes ){
+          return 1;
+        }
+        if ( a.upvotes > b.upvotes ){
+          return -1;
+        }
+        return 0;
+      }
   
+      let newOrder = [...comments];
+  
+      newOrder.sort(compareUpvotes);
+  
+      setComments(newOrder);
+
+      setOrderedby("Top Comments");
+  
+    }
+
+
+    const orderByNewer = () => {
+      function compareDates( a, b ) {
+        let date1 = new Date(a.createdAt);
+        let date2 = new Date(b.createdAt);
+        if ( date1 < date2 ){
+          return 1;
+        }
+        if ( date1 > date2 ){
+          return -1;
+        }
+        return 0;
+      }
+
+      let newOrder = [...comments];
+
+      newOrder.sort(compareDates);
+
+      setComments(newOrder);
+
+      setOrderedby("New Comments");
+
+    }
+    
     let {id} = useParams();
 
       // Funcion que maneja el upvote.
@@ -86,9 +134,6 @@ function PublicationDetail(){
           data: values,
           withCredentials: true
         }).then( (newComment) => {
-          //Redirect to home
-          //DUDOSO ESTE REDIRECT (ES BUENA PRACTICA?)
-          console.log(newComment);
           setComments([newComment.data, ...comments]);
         }
         );
@@ -178,6 +223,13 @@ function PublicationDetail(){
                 
                 <CommentSection onSubmit={handleSubmit(addComment)}>
                   <h2>Opinions</h2>
+                  <div className="dropdown">
+                    <button className="dropbtn">{orderedby}</button>
+                    <div className="dropdown-content">
+                      <a onClick={orderByUpvotes}>Top Comments</a>
+                      <a onClick={orderByNewer}>New Comments</a>
+                    </div>
+                  </div>
                   {general.isLoggedIn() &&
                     <>
                     <CommentBox 

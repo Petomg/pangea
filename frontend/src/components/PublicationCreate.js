@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import {Entry, Input, Label, ButtonS, TextArea, Topic} from '../styled-components/CreatePub';
+import {Entry, Input, Label, ButtonS, TextArea, TopicLabel} from '../styled-components/CreatePub';
 
 import '../App.css';
 
@@ -95,7 +95,7 @@ const PublicationCreate = () => {
 
             {topics.map(topic => (
                 <div key={topic._id} class="topic-select">
-                  <Topic for={"t_".concat(topic.name.toLowerCase())} className="topic-label">{topic.name} </Topic>
+                  <TopicLabel for={"t_".concat(topic.name.toLowerCase())} className="topic-label">{topic.name} </TopicLabel>
                   <input id={"t_".concat(topic.name.toLowerCase())} className="topic-check" type="checkbox" placeholder={topic.name} name={topic.name} ref={register} /> <br></br>
                 </div>
             ))}

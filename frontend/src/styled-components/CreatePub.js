@@ -17,7 +17,7 @@ let Input = styled.input`
     margin-top: 1em;
 `;
 
-let Topic = styled.label`
+let TopicLabel = styled.label`
     display: inline-block;
     text-decoration:none;
     padding: 0.5em;
@@ -74,6 +74,6 @@ export {
     Label,
     ButtonS,
     TextArea,
-    Topic,
+    TopicLabel,
     Error
 }

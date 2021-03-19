@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Wrapper, Title, ButtonS, Topic, TopicList, Card, Banner, BannerBtn } from "../styled-components/ListingPubs";
+import { TopicLabel } from "../styled-components/CreatePub";
 
 import env from "react-dotenv";
 
@@ -13,6 +14,8 @@ function PublicationList(){
   const [pubs, setPubs] = useState([]);
   const [topics, setTopics] = useState([]);
   const [toggleTopics, setToggleTopics] = useState(false);
+  const [orderedby, setOrderedby] = useState("New Debates");
+
  
   const onSubmit = values => { 
     // Reareglar valores para acomodar topics en array 
@@ -56,6 +59,8 @@ function PublicationList(){
 
     setPubs(newOrder);
 
+    setOrderedby("Top Debates");
+
   }
 
   const orderByNewer = () => {
@@ -76,6 +81,8 @@ function PublicationList(){
     newOrder.sort(compareDates);
 
     setPubs(newOrder);
+
+    setOrderedby("New Debates");
 
   }
 
@@ -123,18 +130,25 @@ function PublicationList(){
         {toggleTopics && 
           <form onSubmit={handleSubmit(onSubmit)} className="needs-space">
             <label className="selectall-label" for="selectAll">Whatever</label>
-            <input type="checkbox" name="selectAll" onClick={selectAll}/>
+            <input id="selectAll" type="checkbox" name="selectAll" onClick={selectAll} />
             {topics.map(topic => (
                       <div key={topic._id} class="topic-select">
-                        <Topic for={"t_".concat(topic.name.toLowerCase())} className="topic-label">{topic.name} </Topic>
-                        <input id={"t_".concat(topic.name.toLowerCase())} className="topic-check" type="checkbox" placeholder={topic.name} name={topic.name} ref={register} /> <br></br>
+                        <TopicLabel for={"t2_".concat(topic.name.toLowerCase())} className="topic-label">{topic.name} </TopicLabel>
+                        <input id={"t2_".concat(topic.name.toLowerCase())} className="topic-check" type="checkbox" placeholder={topic.name} name={topic.name} ref={register} /> <br></br>
                       </div>
                   ))}
-            <button type="submit">Search</button>
+            <button type="submit" className="small_button">Search</button>
           </form>
         }
-        <ButtonS primary onClick={orderByUpvotes}>Top Debates</ButtonS>
-        <ButtonS primary onClick={orderByNewer}>Newer Debates</ButtonS>
+      </div>
+      <div className="to-close-to-top">
+        <div className="dropdown">
+                    <button className="dropbtn">{orderedby}</button>
+                    <div className="dropdown-content">
+                      <a onClick={orderByUpvotes}>Top Debates</a>
+                      <a onClick={orderByNewer}>New Debates</a>
+                    </div>
+        </div>
       </div>
 
       <Wrapper id="pub-list">
