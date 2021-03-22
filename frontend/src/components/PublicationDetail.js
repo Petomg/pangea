@@ -201,7 +201,8 @@ function PublicationDetail(){
           return (
             <Wrapper className="pub-detail">
                 <Title>{pubFields.title}</Title>
-                {pubFields.author !== undefined &&
+                <h2>{pubFields.isClosed && "CLOSED" || "OPEN"}</h2>
+                {pubFields.author !== undefined && 
                  <Link className="user-tag" to={`/profile/${pubFields.author.name}`}>{pubFields.author.name}</Link>
                 }
                 <b className="date-tag">{general.formatDate(pubFields.createdAt)}</b>

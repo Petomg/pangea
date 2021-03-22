@@ -6,6 +6,25 @@ let CommentsModel = require('../models/Comments');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/User');
 
+let schedule = require('node-schedule');
+
+let programClosing = (post_id) => {
+    let futureDate = new Date(new Date().getTime() + 30 * 60 * 24 * 1000); // This is 48 hours from *now*
+    console.log(`PROGRAMANDO EVENTO SOBRE: ${post_id} PARA FECHA ${futureDate}`);
+    
+    schedule.scheduleJob(futureDate, function(){
+        console.log(`DISPARANDO EVENTO SOBRE ${post_id}`);
+        PostModel.findById(post_id)
+        .then( (post) => {
+          post.isClosed = true;
+          post.save();
+        }
+        ).catch(() => {
+          return console.error("Error while scheduling event");
+        });
+    });
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Bruno malo' });
@@ -91,15 +110,17 @@ router.post('/add_post', function(req, res, next) {
       } 
   });
 
-  let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id, author: author_id, upvotesUsers: upvotesUsers});
+  let newPost = new PostModel({title, description, topics, upvotes, urn: newUrn._id, author: author_id, upvotesUsers: upvotesUsers, isClosed: isClosed});
 
   newPost.save(function(err, pub){
       if (err) {
         return console.error("Error while adding Post");
-      } else {
-        res.send(`${title} saved successfuly`);
-      }
+      } 
   });
+  console.log(newPost._id);
+  programClosing(newPost._id);
+  return res.send(`${title} saved successfuly`);
+
 });
 
 router.post('/upvote_post/:pid', function(req, res, next) {

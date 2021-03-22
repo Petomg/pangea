@@ -38,6 +38,8 @@ let PostSchema = mongoose.Schema({
 
   upvotesUsers : [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}],
   
+  isClosed: Boolean,
+  
 },{
   timestamps: true
 })
