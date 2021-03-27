@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { useParams, Redirect } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { Title, Wrapper, ButtonS, TopicList, Topic, CommentSection, CommentBox, CommentIndiv, CommentButton, SubComments } from "../styled-components/ListingPubs";
+import { Title, Wrapper, ButtonS, TopicList, Topic, CommentSection, CommentBox, CommentIndiv, CommentButton, SubComments, ClosedTag } from "../styled-components/ListingPubs";
 import * as general from "../operational/general_functionality";
 
 import env from "react-dotenv";
@@ -201,11 +201,13 @@ function PublicationDetail(){
           return (
             <Wrapper className="pub-detail">
                 <Title>{pubFields.title}</Title>
-                <h2>{pubFields.isClosed && "CLOSED" || "OPEN"}</h2>
                 {pubFields.author !== undefined && 
                  <Link className="user-tag" to={`/profile/${pubFields.author.name}`}>{pubFields.author.name}</Link>
                 }
                 <b className="date-tag">{general.formatDate(pubFields.createdAt)}</b>
+                <div>
+                  <ClosedTag isopen={pubFields.isClosed}>{pubFields.isClosed && "CLOSED" || "OPEN"}</ClosedTag>
+                </div>
                 <p>{pubFields.description}</p>
                 <p><p className="upvotes-indicator">{pubFields.upvotes}</p></p>
                 {general.isLoggedIn() && 
@@ -217,8 +219,9 @@ function PublicationDetail(){
                 ))}
                 </TopicList>
 
-                
-                <Urn urnid={pubFields.urn}></Urn>
+                {pubFields.isClosed && 
+                  <Urn urnid={pubFields.urn}></Urn>
+                }
 
 
                 

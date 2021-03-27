@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Wrapper, Title, ButtonS, Topic, TopicList, Card, Banner, BannerBtn } from "../styled-components/ListingPubs";
+import { Wrapper, Title, ButtonS, Topic, TopicList, Card, Banner, BannerBtn, ClosedTagMini } from "../styled-components/ListingPubs";
 import { TopicLabel } from "../styled-components/CreatePub";
 
 import env from "react-dotenv";
@@ -156,7 +156,8 @@ function PublicationList(){
         {pubs.map(pub => ( 
 
           <Card key={pub._id}>
-            <Title>{pub.title}</Title> 
+            <Title>{pub.title}</Title>
+            <ClosedTagMini isopen={pub.isClosed}>{pub.isClosed ? "C" : "O"}</ClosedTagMini> 
             <p>{pub.description}</p>
             <h4 className="upvotes-indicator">{pub.upvotes}</h4>
             <TopicList id="topics-individual">

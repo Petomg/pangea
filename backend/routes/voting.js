@@ -48,6 +48,16 @@ router.post('/positive/:vid', function(req, res, next){
             let decodedToken = jwt.decode(req.body.user_token, { complete: true }) || {};
             let user_id = decodedToken.payload.user._id;
 
+            UserModel.findById(user_id , function(err, user) {
+                if (err){
+                  return console.error(`Error loading user: ${user_id}`);
+                } else {
+                  user.reputation += 10;
+                  user.save();
+                }
+            });
+
+
             if (!(urn.isClosed)){
                 if(urn.negUsers.includes(user_id)){
                     urn.negVotes = urn.negVotes - 1;
@@ -63,14 +73,7 @@ router.post('/positive/:vid', function(req, res, next){
                 urn.save();
             }
 
-            UserModel.findById(user_id , function(err, user) {
-                if (err){
-                  return console.error(`Error loading user: ${user_id}`);
-                } else {
-                  user.reputation += 10;
-                  user.save();
-                }
-              });
+         
 
             return res.json(urn);
         }
@@ -86,6 +89,15 @@ router.post('/negative/:vid', function(req, res, next){
             let decodedToken = jwt.decode(req.body.user_token, { complete: true }) || {};
             let user_id = decodedToken.payload.user._id;
 
+            UserModel.findById(user_id , function(err, user) {
+                if (err){
+                  return console.error(`Error loading user: ${user_id}`);
+                } else {
+                  user.reputation += 10;
+                  user.save();
+                }
+            });
+
             if (!(urn.isClosed)){
                 if(urn.posUsers.includes(user_id)){
                     urn.posVotes = urn.posVotes - 1;
@@ -100,15 +112,6 @@ router.post('/negative/:vid', function(req, res, next){
 
                 urn.save();
             }
-
-            UserModel.findById(user_id , function(err, user) {
-                if (err){
-                  return console.error(`Error loading user: ${user_id}`);
-                } else {
-                  user.reputation += 10;
-                  user.save();
-                }
-              });
 
             return res.json(urn);
         }

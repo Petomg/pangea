@@ -48,6 +48,7 @@ const Topic = styled.li`
 `;
 
 const Card = styled.div`
+    position: relative;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
     transition: 0.3s;
     padding: 2em;
@@ -138,6 +139,29 @@ const SubComments = styled.div`
     margin-left: 3em;
 `;
 
+const ClosedTag = styled.h2`
+    display: inline-block;
+    padding: 0.7em;
+    background-color: ${props => !props.isopen ? "#4DB6AC" : "#EF5350"};
+    border-radius: 0.5em;
+    border: 3px solid black;
+`;
+
+const ClosedTagMini = styled.h2`
+    display: inline-block;
+    height: 1.5em;
+    width: 1.5em;
+    line-height: 1.5em;
+    text-align: center;
+    border-radius: 50%;
+    background-color: ${props => !props.isopen ? "#4DB6AC" : "#EF5350"};
+    border: 3px solid black;
+    position: absolute;
+    left: 7%;
+    top: 7%;
+    transform: translateX(-50%);
+`;
+
 export {
     Title,
     Wrapper,
@@ -152,4 +176,6 @@ export {
     CommentIndiv,
     CommentButton,
     SubComments,
+    ClosedTag,
+    ClosedTagMini
 }
